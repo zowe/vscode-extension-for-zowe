@@ -638,7 +638,7 @@ describe("Dataset Actions Unit Tests - Function deleteDatasetPrompt", () => {
         );
     });
 
-    it("Should not delete a favorited dataset", async () => {
+    it("Should delete a favorited data set", async () => {
         const globalMocks = createGlobalMocks();
         const blockMocks = createBlockMocks(globalMocks);
 
@@ -649,12 +649,14 @@ describe("Dataset Actions Unit Tests - Function deleteDatasetPrompt", () => {
 
         await dsActions.deleteDatasetPrompt(blockMocks.testDatasetTree);
 
-        expect(mocked(vscode.window.showInformationMessage)).toBeCalledWith(
-            "Deleting data sets and members from the Favorites section is currently not supported."
+        expect(mocked(vscode.window.showWarningMessage)).toBeCalledWith(
+            `Are you sure you want to delete the following 1 item(s)?\nThis will permanently remove these data sets and/or members from your system.\n\n ${blockMocks.testFavoritedNode.getLabel()}`,
+            { modal: true },
+            "Delete"
         );
     });
 
-    it("Should not delete a favorited member", async () => {
+    it("Should delete a favorited member", async () => {
         const globalMocks = createGlobalMocks();
         const blockMocks = createBlockMocks(globalMocks);
 
@@ -665,12 +667,14 @@ describe("Dataset Actions Unit Tests - Function deleteDatasetPrompt", () => {
 
         await dsActions.deleteDatasetPrompt(blockMocks.testDatasetTree);
 
-        expect(mocked(vscode.window.showInformationMessage)).toBeCalledWith(
-            "Deleting data sets and members from the Favorites section is currently not supported."
+        expect(mocked(vscode.window.showWarningMessage)).toBeCalledWith(
+            `Are you sure you want to delete the following 1 item(s)?\nThis will permanently remove these data sets and/or members from your system.\n\n ${blockMocks.testFavoritedNode.getLabel()}(${blockMocks.testFavMemberNode.getLabel()})`,
+            { modal: true },
+            "Delete"
         );
     });
 
-    it("Should not delete a session", async () => {
+    it("Should not consider a session for deletion", async () => {
         const globalMocks = createGlobalMocks();
         const blockMocks = createBlockMocks(globalMocks);
 
@@ -682,11 +686,11 @@ describe("Dataset Actions Unit Tests - Function deleteDatasetPrompt", () => {
         await dsActions.deleteDatasetPrompt(blockMocks.testDatasetTree);
 
         expect(mocked(vscode.window.showInformationMessage)).toBeCalledWith(
-            "Deleting data sets and members from the Favorites section is currently not supported."
+            "No data sets selected for deletion, cancelling..."
         );
     });
 
-    it("Should fail to delete first dataset and succeed in deleting second dataset", async () => {
+    it("Should account for favorited data sets during deletion", async () => {
         const globalMocks = createGlobalMocks();
         const blockMocks = createBlockMocks(globalMocks);
 
@@ -698,7 +702,7 @@ describe("Dataset Actions Unit Tests - Function deleteDatasetPrompt", () => {
         await dsActions.deleteDatasetPrompt(blockMocks.testDatasetTree);
 
         expect(mocked(vscode.window.showInformationMessage)).toBeCalledWith(
-            `The following 1 item(s) were deleted: ${blockMocks.testDatasetNode.getLabel()}`
+            `The following 2 item(s) were deleted: ${blockMocks.testDatasetNode.getLabel()}, ${blockMocks.testFavoritedNode.getLabel()}`
         );
     });
 
