@@ -13,7 +13,7 @@ import * as vscode from "vscode";
 import * as jobUtils from "../job/utils";
 import * as globals from "../globals";
 import { IJob, imperative } from "@zowe/cli";
-import { ValidProfileEnum, IZoweTree, IZoweJobTreeNode, PersistenceSchemaEnum } from "@zowe/zowe-explorer-api";
+import { ValidProfileEnum, IZoweTree, IZoweJobTreeNode, PersistenceSchemaEnum, NodeMap } from "@zowe/zowe-explorer-api";
 import { FilterItem, FilterDescriptor, resolveQuickPickHelper, errorHandling } from "../utils/ProfilesUtils";
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
@@ -58,6 +58,7 @@ export class ZosJobsProvider extends ZoweTreeProvider implements IZoweTree<IZowe
 
     public mSessionNodes: IZoweJobTreeNode[] = [];
     public mFavorites: IZoweJobTreeNode[] = [];
+    public mNodeMap: NodeMap;
     public createOwner = new jobUtils.OwnerFilterDescriptor();
     public createId = new jobUtils.JobIdFilterDescriptor();
     private treeView: vscode.TreeView<IZoweJobTreeNode>;
@@ -80,6 +81,7 @@ export class ZosJobsProvider extends ZoweTreeProvider implements IZoweTree<IZowe
             this.mFavoriteSession.iconPath = icon.path;
         }
         this.mSessionNodes = [this.mFavoriteSession];
+        this.mNodeMap = new Map([["Favorites", { nonFavNode: this.mFavoriteSession }]]);
         this.treeView = vscode.window.createTreeView("zowe.jobs.explorer", {
             treeDataProvider: this,
             canSelectMany: true,

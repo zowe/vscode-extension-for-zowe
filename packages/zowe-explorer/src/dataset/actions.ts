@@ -59,9 +59,9 @@ export async function allocateLike(
         );
         quickpick.ignoreFocusOut = true;
 
-        for (const thisSession of datasetProvider.mSessionNodes) {
-            if (!thisSession.label.toString().includes("Favorites")) {
-                qpItems.push(new FilterItem({ text: thisSession.label as string }));
+        for (const [label, nodePair] of datasetProvider.mNodeMap) {
+            if (!label.includes("Favorites")) {
+                qpItems.push(new FilterItem({ text: label }));
             }
         }
         quickpick.items = [...qpItems];
@@ -72,7 +72,7 @@ export async function allocateLike(
             vscode.window.showInformationMessage(localize("allocateLike.noSelection", "You must select a profile."));
             return;
         } else {
-            currSession = datasetProvider.mSessionNodes.find((thisSession) => thisSession.label === selection.label);
+            currSession = datasetProvider.mNodeMap.get(selection.label).nonFavNode;
             profile = currSession.getProfile();
         }
         quickpick.dispose();
@@ -141,9 +141,7 @@ export async function allocateLike(
 
     // Refresh tree and open new node, if applicable
     if (!currSession) {
-        currSession = datasetProvider.mSessionNodes.find(
-            (thisSession) => thisSession.label.toString() === profile.name
-        );
+        currSession = datasetProvider.mNodeMap.get(profile.name)?.nonFavNode;
     }
     const theFilter = await datasetProvider.createFilterString(newDSName, currSession);
     currSession.tooltip = currSession.pattern = theFilter.toUpperCase();
@@ -1044,11 +1042,8 @@ export async function deleteDataset(node: api.IZoweTreeNode, datasetProvider: ap
 
     // remove node from tree
     if (fav) {
-        datasetProvider.mSessionNodes.forEach((ses) => {
-            if (node.getProfileName() === ses.label.toString()) {
-                ses.dirty = true;
-            }
-        });
+        const ses = datasetProvider.mNodeMap.get(node.getProfileName())?.nonFavNode;
+        ses.dirty = true;
     } else {
         node.getSessionNode().dirty = true;
     }
@@ -1416,7 +1411,7 @@ export async function saveFile(doc: vscode.TextDocument, datasetProvider: api.IZ
         }
     }
     // Get specific node based on label and parent tree (session / favorites)
-    const nodes: api.IZoweNodeType[] = concatChildNodes(sesNode ? [sesNode] : datasetProvider.mSessionNodes);
+    const nodes: api.IZoweNodeType[] = concatChildNodes(sesNode ? [sesNode] : Array.from(datasetProvider.mNodeMap.values()).map((v) => v.nonFavNode));
     const node: api.IZoweDatasetTreeNode = nodes.find((zNode) => {
         if (contextually.isDsMember(zNode)) {
             const zNodeDetails = dsUtils.getProfileAndDataSetName(zNode);

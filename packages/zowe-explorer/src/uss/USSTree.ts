@@ -21,7 +21,7 @@ import {
     syncSessionNode,
 } from "../utils/ProfilesUtils";
 import { sortTreeItems, getAppName, checkIfChildPath } from "../shared/utils";
-import { IZoweTree, IZoweUSSTreeNode, ValidProfileEnum, PersistenceSchemaEnum } from "@zowe/zowe-explorer-api";
+import { IZoweTree, IZoweUSSTreeNode, ValidProfileEnum, PersistenceSchemaEnum, NodeMap } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { ZoweUSSNode } from "./ZoweUSSNode";
@@ -67,6 +67,7 @@ export class USSTree extends ZoweTreeProvider implements IZoweTree<IZoweUSSTreeN
     public mFavoriteSession: ZoweUSSNode;
     public mSessionNodes: IZoweUSSTreeNode[] = [];
     public mFavorites: IZoweUSSTreeNode[] = [];
+    public mNodeMap: NodeMap;
     private treeView: vscode.TreeView<IZoweUSSTreeNode>;
 
     constructor() {
@@ -86,6 +87,7 @@ export class USSTree extends ZoweTreeProvider implements IZoweTree<IZoweUSSTreeN
             this.mFavoriteSession.iconPath = icon.path;
         }
         this.mSessionNodes = [this.mFavoriteSession as IZoweUSSTreeNode];
+        this.mNodeMap = new Map([["Favorites", { nonFavNode: this.mFavoriteSession }]]);
         this.treeView = vscode.window.createTreeView("zowe.uss.explorer", {
             treeDataProvider: this,
             canSelectMany: true,

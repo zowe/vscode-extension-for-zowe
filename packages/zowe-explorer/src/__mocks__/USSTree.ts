@@ -12,7 +12,7 @@
 import * as vscode from "vscode";
 import { ZoweUSSNode } from "../uss/ZoweUSSNode";
 import { MockMethod } from "../decorators/MockMethod";
-import { IZoweUSSTreeNode, IZoweDatasetTreeNode, IZoweTreeNode } from "@zowe/zowe-explorer-api";
+import { IZoweUSSTreeNode, IZoweDatasetTreeNode, IZoweTreeNode, NodeMap } from "@zowe/zowe-explorer-api";
 import { createTreeView } from "../../__mocks__/mockCreators/shared";
 import { ZoweTreeProvider } from "../abstract/ZoweTreeProvider";
 
@@ -32,6 +32,7 @@ export class USSTree implements vscode.TreeDataProvider<ZoweUSSNode> {
     >();
     public readonly onDidChangeTreeData: vscode.Event<ZoweUSSNode | undefined> = this.mOnDidChangeTreeData.event;
     public mFavorites: ZoweUSSNode[];
+    public mNodeMap: NodeMap;
 
     /**
      * @param {IZoweUSSTreeNode} node

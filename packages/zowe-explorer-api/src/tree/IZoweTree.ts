@@ -13,6 +13,12 @@ import * as vscode from "vscode";
 import { IZoweNodeType, IZoweDatasetTreeNode, IZoweUSSTreeNode } from "./IZoweTreeNode";
 import { PersistenceSchemaEnum } from "../profiles/UserSettings";
 
+type NodePair = {
+    favNode?: IZoweNodeType;
+    nonFavNode?: IZoweNodeType;
+};
+export type NodeMap = Map<string, NodePair>;
+
 /**
  * The base interface for Zowe tree browsers that implement the
  * vscode.TreeDataProvider.
@@ -24,8 +30,11 @@ import { PersistenceSchemaEnum } from "../profiles/UserSettings";
  */
 export interface IZoweTree<T> extends vscode.TreeDataProvider<T> {
     /**
-     * Root session nodes
+     * Node mapping from label -> { fav, nonFav }
      */
+    mNodeMap: NodeMap;
+
+    // TODO: remove
     mSessionNodes: IZoweNodeType[];
     /**
      * Root favorites node
@@ -204,14 +213,12 @@ export interface IZoweTree<T> extends vscode.TreeDataProvider<T> {
      * Finds an equivalent node but not as a favorite
      *
      * @param {IZoweDatasetTreeNode} node
-     * @deprecated should not be visible outside of class
      */
     findFavoritedNode(node: IZoweNodeType): IZoweNodeType;
     /**
      * Finds the equivalent node but not as a favorite
      *
      * @param {IZoweDatasetTreeNode} node
-     * @deprecated should not be visible outside of class
      */
     findNonFavoritedNode(node: IZoweNodeType): IZoweNodeType;
     /**

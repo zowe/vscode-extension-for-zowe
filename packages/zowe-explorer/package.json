@@ -880,7 +880,7 @@
           "group": "099_zowe_ussProfileModification@99"
         },
         {
-          "when": "view == zowe.ds.explorer && viewItem =~ /^(?!.*_fav.*)session.*/",
+          "when": "view == zowe.ds.explorer && viewItem =~ /session.*/",
           "command": "zowe.ds.pattern",
           "group": "inline"
         },
