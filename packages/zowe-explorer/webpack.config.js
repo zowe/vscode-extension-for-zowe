@@ -79,6 +79,20 @@ const config = {
                     },
                 ],
             },
+            {
+                // https://github.com/panva/node-openid-client/issues/460
+                test: /\.js$/,
+                include: /openid-client/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: [
+                            ["@babel/preset-env", { targets: "defaults" }],
+                        ],
+                        plugins: ["@babel/plugin-proposal-class-properties"],
+                    },
+                },
+            },
         ],
     },
     plugins: [new webpack.BannerPlugin(fs.readFileSync("../../scripts/LICENSE_HEADER", "utf-8"))],

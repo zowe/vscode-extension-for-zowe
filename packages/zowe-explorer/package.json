@@ -1818,6 +1818,7 @@
     "@types/promise-queue": "^2.2.0",
     "@types/selenium-webdriver": "^3.0.4",
     "@types/yargs": "^11.0.0",
+    "babel-loader": "^8.3.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chalk": "^2.4.1",
@@ -1849,6 +1850,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "@zowe/secrets-for-kubernetes-for-zowe-cli": "file:../../../zowe-cli-secrets-for-kubernetes/packages/cli",
     "@zowe/zowe-explorer-api": "2.7.0-SNAPSHOT",
     "fs-extra": "8.0.1",
     "isbinaryfile": "4.0.4",

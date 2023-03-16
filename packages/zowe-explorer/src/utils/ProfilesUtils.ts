@@ -20,6 +20,8 @@ import { Profiles } from "../Profiles";
 import * as nls from "vscode-nls";
 import { imperative, getImperativeConfig } from "@zowe/cli";
 import { ZoweExplorerExtender } from "../ZoweExplorerExtender";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const K8sCredentialManager = require("@zowe/secrets-for-kubernetes-for-zowe-cli/lib/credentials/K8sCredentialManager");
 
 // Set up localization
 nls.config({
@@ -230,7 +232,8 @@ export async function setSession(node: IZoweTreeNode, combinedSessionProfile: im
 
 export async function getProfileInfo(envTheia: boolean): Promise<imperative.ProfileInfo> {
     const mProfileInfo = new imperative.ProfileInfo("zowe", {
-        requireKeytar: () => getSecurityModules("keytar", envTheia),
+        // requireKeytar: () => getSecurityModules("keytar", envTheia),
+        credMgrOverride: K8sCredentialManager,
     });
     return mProfileInfo;
 }
