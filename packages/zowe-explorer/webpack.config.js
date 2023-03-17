@@ -45,6 +45,7 @@ const config = {
         "spdx-license-ids": "commonjs spdx-license-ids",
         "spdx-license-ids/deprecated": "commonjs spdx-license-ids/deprecated",
         "cpu-features": "commonjs cpu-features",
+        "@kubernetes/client-node": "commonjs @kubernetes/client-node",
     },
     resolve: {
         // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
@@ -78,20 +79,6 @@ const config = {
                         },
                     },
                 ],
-            },
-            {
-                // https://github.com/panva/node-openid-client/issues/460
-                test: /\.js$/,
-                include: /openid-client/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: [
-                            ["@babel/preset-env", { targets: "defaults" }],
-                        ],
-                        plugins: ["@babel/plugin-proposal-class-properties"],
-                    },
-                },
             },
         ],
     },
