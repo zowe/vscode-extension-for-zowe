@@ -290,11 +290,9 @@ export async function promptCredentials(node: IZoweTreeNode) {
             return;
         }
         profileName = profileName.trim();
-    } else {
-        profileName = node.getProfile().name;
     }
 
-    const creds = await Profiles.getInstance().promptCredentials(profileName, true);
+    const creds = await Profiles.getInstance().promptCredentials(profileName ?? node.getProfile(), true);
 
     if (creds != null) {
         Gui.showMessage(localize("promptCredentials.updatedCredentials", "Credentials for {0} were successfully updated", profileName));
@@ -360,7 +358,7 @@ export function writeOverridesFile() {
             settings = { overrides: { CredentialManager: globals.PROFILE_SECURITY } };
         }
         fileContent = JSON.stringify(settings, null, 2);
-        fs.writeFileSync(fd, fileContent);
+        fs.writeFileSync(fd, fileContent, "utf-8");
     } finally {
         fs.closeSync(fd);
     }
