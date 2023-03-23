@@ -233,7 +233,10 @@ export async function setSession(node: IZoweTreeNode, combinedSessionProfile: im
 export async function getProfileInfo(envTheia: boolean): Promise<imperative.ProfileInfo> {
     const mProfileInfo = new imperative.ProfileInfo("zowe", {
         // requireKeytar: () => getSecurityModules("keytar", envTheia),
-        credMgrOverride: K8sCredentialManager,
+        credMgrOverride: {
+            service: "Secrets for Kubernetes",
+            Manager: K8sCredentialManager
+        },
     });
     return mProfileInfo;
 }
