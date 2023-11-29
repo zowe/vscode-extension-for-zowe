@@ -510,16 +510,21 @@ export class ZoweUSSNode extends ZoweTreeNode implements IZoweUSSTreeNode {
                     // if local copy exists, open that instead of pulling from mainframe
                     if (download || !fileExists) {
                         const cachedProfile = Profiles.getInstance().loadNamedProfile(this.getProfileName());
-                        const fullPath = this.fullPath;
-                        const chooseBinary =
-                            this.binary || (await ZoweExplorerApiRegister.getUssApi(cachedProfile).isFileTagBinOrAscii(this.fullPath));
+                        const ussApi = ZoweExplorerApiRegister.getUssApi(cachedProfile);
 
+                        const getTag: (path: string) => Promise<string> = ussApi.getTag
+                            ? ussApi.getTag.bind(ussApi)
+                            : async (_p): Promise<string> => Promise.resolve("untagged");
+
+                        this.attributes.tag = await getTag(this.fullPath);
+                        const chooseBinary = this.binary || (await ussApi.isFileTagBinOrAscii(this.fullPath));
+                        const taggedEncoding = this.attributes.tag === "untagged" ? null : this.attributes.tag;
                         const statusMsg = Gui.setStatusBarMessage(localize("ussFile.opening", "$(sync~spin) Opening USS file..."));
-                        const response = await ZoweExplorerApiRegister.getUssApi(cachedProfile).getContents(fullPath, {
+                        const response = await ZoweExplorerApiRegister.getUssApi(cachedProfile).getContents(this.fullPath, {
                             file: documentFilePath,
                             binary: chooseBinary,
                             returnEtag: true,
-                            encoding: cachedProfile.profile?.encoding,
+                            encoding: chooseBinary ? undefined : taggedEncoding || cachedProfile.profile?.encoding,
                             responseTimeout: cachedProfile.profile?.responseTimeout,
                         });
                         statusMsg.dispose();

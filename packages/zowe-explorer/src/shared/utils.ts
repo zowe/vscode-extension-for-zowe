@@ -227,7 +227,14 @@ export async function uploadContent(
         return ZoweExplorerApiRegister.getMvsApi(profile).putContents(doc.fileName, remotePath, uploadOptions);
     } else {
         // if new api method exists, use it
-        if (ZoweExplorerApiRegister.getUssApi(profile).putContent) {
+        const ussApi = ZoweExplorerApiRegister.getUssApi(profile);
+        const getTag: (path: string) => Promise<string> = ussApi.getTag
+            ? ussApi.getTag.bind(ussApi)
+            : async (_p): Promise<string> => Promise.resolve("untagged");
+
+        node.attributes.tag = await getTag(this.fullPath);
+        const taggedEncoding = node.attributes.tag === "untagged" ? null : node.attributes.tag;
+        if (ussApi.putContent) {
             const task: imperative.ITaskWithStatus = {
                 percentComplete: 0,
                 statusMessage: localize("uploadContent.putContents", "Uploading USS file"),
@@ -235,6 +242,7 @@ export async function uploadContent(
             };
             const result = ZoweExplorerApiRegister.getUssApi(profile).putContent(doc.fileName, remotePath, {
                 binary,
+                encoding: binary ? undefined : (taggedEncoding || profile.profile?.encoding),
                 localEncoding: null,
                 task,
                 ...uploadOptions,
