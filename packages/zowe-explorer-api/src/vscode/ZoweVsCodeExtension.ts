@@ -27,7 +27,7 @@ export class ZoweVsCodeExtension {
      * @internal
      */
     public static get profilesCache(): ProfilesCache {
-        return new ProfilesCache(imperative.Logger.getAppLogger(), vscode.workspace.workspaceFolders?.[0]?.uri.fsPath);
+        return new ProfilesCache(imperative.Logger.getAppLogger(), this.workspaceRootPath);
     }
 
     /**
@@ -35,6 +35,10 @@ export class ZoweVsCodeExtension {
      */
     public static get customLoggingPath(): string | undefined {
         return vscode.workspace.getConfiguration("zowe").get("files.logsFolder.path") || undefined;
+    }
+
+    public static get workspaceRootPath(): string | undefined {
+        return vscode.workspace.workspaceFolders?.[0]?.uri.scheme === "file" ? vscode.workspace.workspaceFolders[0].uri.fsPath : undefined;
     }
 
     /**

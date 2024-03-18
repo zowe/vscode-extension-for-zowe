@@ -24,6 +24,7 @@ import { TreeProviders } from "./shared/TreeProviders";
 import { initDatasetProvider } from "./dataset/init";
 import { initUSSProvider } from "./uss/init";
 import { initJobsProvider } from "./job/init";
+import { ZoweScheme } from "@zowe/zowe-explorer-api";
 
 /**
  * The function that runs when the extension is loaded
@@ -47,6 +48,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<ZoweEx
 
     watchConfigProfile(context, providers);
     await watchForZoweButtonClick();
+    for (const workspaceFolder of vscode.workspace.workspaceFolders ?? []) {
+        if (Object.values<string>(ZoweScheme).includes(workspaceFolder?.uri.scheme)) {
+            vscode.workspace.fs.createDirectory(workspaceFolder.uri);
+        }
+    }
 
     return ZoweExplorerApiRegister.getInstance();
 }

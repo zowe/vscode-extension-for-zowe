@@ -16,7 +16,16 @@ import * as globals from "../globals";
 import * as path from "path";
 import * as fs from "fs";
 import * as util from "util";
-import { IZoweTreeNode, ZoweTreeNode, FileManagement, Gui, ProfilesCache, MainframeInteraction, imperative } from "@zowe/zowe-explorer-api";
+import {
+    IZoweTreeNode,
+    ZoweTreeNode,
+    FileManagement,
+    Gui,
+    ProfilesCache,
+    MainframeInteraction,
+    imperative,
+    ZoweVsCodeExtension,
+} from "@zowe/zowe-explorer-api";
 import * as contextually from "../shared/context";
 import { ZoweLogger } from "./ZoweLogger";
 import { SettingsConfig } from "./SettingsConfig";
@@ -425,7 +434,7 @@ export class ProfilesUtils {
         ZoweLogger.trace("ProfilesUtils.readConfigFromDisk called.");
         let rootPath: string;
         const mProfileInfo = await ProfilesUtils.getProfileInfo();
-        if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]) {
+        if (ZoweVsCodeExtension.workspaceRootPath != null) {
             rootPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
             await mProfileInfo.readProfilesFromDisk({ homeDir: FileManagement.getZoweDir(), projectDir: FileManagement.getFullPath(rootPath) });
         } else {

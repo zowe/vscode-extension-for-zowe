@@ -13,7 +13,7 @@ import * as globals from "../globals";
 import * as vscode from "vscode";
 import * as refreshActions from "./refresh";
 import * as sharedActions from "./actions";
-import { FileManagement, IZoweTree, IZoweTreeNode, Validation } from "@zowe/zowe-explorer-api";
+import { FileManagement, IZoweTree, IZoweTreeNode, Validation, ZoweVsCodeExtension } from "@zowe/zowe-explorer-api";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { Profiles } from "../Profiles";
 import { hideTempFolder, moveTempFolder } from "../utils/TempFolder";
@@ -221,7 +221,7 @@ export function watchConfigProfile(context: vscode.ExtensionContext, providers: 
         vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(FileManagement.getZoweDir(), "{zowe.config,zowe.config.user}.json"))
     );
 
-    if (vscode.workspace.workspaceFolders?.[0] != null) {
+    if (ZoweVsCodeExtension.workspaceRootPath != null) {
         watchers.push(
             vscode.workspace.createFileSystemWatcher(
                 new vscode.RelativePattern(vscode.workspace.workspaceFolders[0].uri.fsPath, "{zowe.config,zowe.config.user}.json")
