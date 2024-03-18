@@ -1,7 +1,7 @@
 {
   "onDidSaveTextDocument1": "File was saved -- determining whether the file is a USS file or Data set.\n Comparing (case insensitive) ",
   "onDidSaveTextDocument2": " against directory ",
-  "onDidSaveTextDocument3": "and",
+  "onDidSaveTextDocument3": " and ",
   "activate.didSaveText.isDataSet": "File is a data set-- saving ",
   "activate.didSaveText.isUSSFile": "File is a USS file -- saving",
   "activate.didSaveText.file": "File ",

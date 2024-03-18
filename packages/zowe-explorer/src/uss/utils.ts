@@ -81,6 +81,7 @@ export async function autoDetectEncoding(node: IZoweUSSTreeNode, profile?: imper
     const ussApi = ZoweExplorerApiRegister.getUssApi(profile ?? node.getProfile());
     if (ussApi.getTag != null) {
         const taggedEncoding = await ussApi.getTag(node.fullPath);
+        ZoweLogger.debug(`Detected encoding from USS file tag: ${taggedEncoding}`);
         if (taggedEncoding === "binary" || taggedEncoding === "mixed") {
             node.setEncoding({ kind: "binary" });
         } else {
@@ -88,6 +89,7 @@ export async function autoDetectEncoding(node: IZoweUSSTreeNode, profile?: imper
         }
     } else {
         const isBinary = await ussApi.isFileTagBinOrAscii(node.fullPath);
+        ZoweLogger.debug(`Detected if binary from USS file tag: ${isBinary ? "yes" : "no"}`);
         node.setEncoding(isBinary ? { kind: "binary" } : undefined);
     }
 }

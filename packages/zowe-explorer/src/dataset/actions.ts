@@ -1200,6 +1200,7 @@ export async function refreshPS(node: api.IZoweDatasetTreeNode): Promise<void> {
             default:
                 throw Error(localize("refreshPS.invalidNode.error", "Item invalid."));
         }
+        ZoweLogger.info(`Refreshing data set ${label}`);
         const documentFilePath = getDocumentFilePath(label, node);
         const prof = node.getProfile();
         const response = await ZoweExplorerApiRegister.getMvsApi(prof).getContents(label, {
@@ -1586,17 +1587,22 @@ export async function saveFile(doc: vscode.TextDocument, datasetProvider: api.IZ
     }
     // Get specific node based on label and parent tree (session / favorites)
     const nodes = concatChildNodes(sesNode ? [sesNode] : datasetProvider.mSessionNodes);
-    const node: api.IZoweDatasetTreeNode =
-        nodes.find((zNode) => {
-            if (contextually.isDsMember(zNode)) {
-                const zNodeDetails = dsUtils.getProfileAndDataSetName(zNode);
-                return `${zNodeDetails.profileName}(${zNodeDetails.dataSetName})` === `${label}`;
-            } else if (contextually.isDs(zNode) || contextually.isDsSession(zNode)) {
-                return zNode.label.toString().trim() === label;
-            } else {
-                return false;
-            }
-        }) ?? datasetProvider.openFiles?.[doc.uri.fsPath];
+    let node = nodes.find((zNode) => {
+        if (contextually.isDsMember(zNode)) {
+            const zNodeDetails = dsUtils.getProfileAndDataSetName(zNode);
+            return `${zNodeDetails.profileName}(${zNodeDetails.dataSetName})` === `${label}`;
+        } else if (contextually.isDs(zNode) || contextually.isDsSession(zNode)) {
+            return zNode.label.toString().trim() === label;
+        } else {
+            return false;
+        }
+    }) as api.IZoweDatasetTreeNode;
+    if (node != null) {
+        ZoweLogger.debug(`Found matching data set node with label: ${node.label as string}`);
+    } else {
+        node = datasetProvider.openFiles?.[doc.uri.fsPath];
+        ZoweLogger.debug(`${node ? "Found" : "Could not find"} matching data set node: ${JSON.stringify(Object.keys(datasetProvider.openFiles))}`);
+    }
 
     // define upload options
     const uploadOptions: IUploadOptions = {

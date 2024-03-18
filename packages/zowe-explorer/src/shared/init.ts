@@ -151,7 +151,7 @@ export function registerCommonCommands(context: vscode.ExtensionContext, provide
                         savedFile.fileName +
                         localize("onDidSaveTextDocument2", " against directory ") +
                         globals.DS_DIR +
-                        localize("onDidSaveTextDocument3", "and") +
+                        localize("onDidSaveTextDocument3", " and ") +
                         globals.USS_DIR
                 );
                 if (savedFile.fileName.toUpperCase().indexOf(globals.DS_DIR.toUpperCase()) >= 0) {
