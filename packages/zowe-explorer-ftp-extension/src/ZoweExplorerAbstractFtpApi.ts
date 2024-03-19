@@ -10,7 +10,7 @@
  */
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { FTPConfig, IZosFTPProfile } from "@zowe/zos-ftp-for-zowe-cli";
+import { FTPConfig, zosNodeAccessor } from "@zowe/zos-ftp-for-zowe-cli";
 import { imperative, MainframeInteraction } from "@zowe/zowe-explorer-api";
 import * as globals from "./globals";
 import { FtpSession } from "./ftpSession";
@@ -60,8 +60,8 @@ export abstract class AbstractFtpApi implements MainframeInteraction.ICommon {
         return this.profile;
     }
 
-    public ftpClient(profile: imperative.IProfileLoaded): Promise<unknown> {
-        const ftpProfile = profile.profile as IZosFTPProfile;
+    public ftpClient(profile: imperative.IProfileLoaded): Promise<zosNodeAccessor.ZosAccessor> {
+        const ftpProfile = profile.profile as imperative.ICommandArguments;
         return FTPConfig.connectFromArguments(ftpProfile);
     }
 

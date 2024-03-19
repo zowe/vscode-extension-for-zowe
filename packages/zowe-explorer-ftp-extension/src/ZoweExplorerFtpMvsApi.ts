@@ -16,7 +16,7 @@ import * as path from "path";
 
 import * as zosfiles from "@zowe/zos-files-for-zowe-sdk";
 import { Gui, imperative, MainframeInteraction, MessageSeverity } from "@zowe/zowe-explorer-api";
-import { DataSetUtils, TRANSFER_TYPE_ASCII, TRANSFER_TYPE_BINARY } from "@zowe/zos-ftp-for-zowe-cli";
+import { CoreUtils, DataSetUtils } from "@zowe/zos-ftp-for-zowe-cli";
 import { AbstractFtpApi } from "./ZoweExplorerAbstractFtpApi";
 import * as globals from "./globals";
 import { ZoweFtpExtensionError } from "./ZoweFtpExtensionError";
@@ -31,21 +31,21 @@ export class FtpMvsApi extends AbstractFtpApi implements MainframeInteraction.IM
         const result = this.getDefaultResponse();
         const session = this.getSession(this.profile);
         try {
-            if (session.mvsListConnection === undefined || session.mvsListConnection.connected === false) {
+            if (!session.mvsListConnection?.isConnected()) {
                 session.mvsListConnection = await this.ftpClient(this.checkedProfile());
             }
-            if (session.mvsListConnection.connected === true) {
+            if (session.mvsListConnection.isConnected()) {
                 const response = await DataSetUtils.listDataSets(session.mvsListConnection, filter);
                 if (response) {
                     result.success = true;
                     result.apiResponse.items = response.map((element) => ({
-                        dsname: element.dsname,
-                        dsorg: element.dsorg,
+                        dsname: element.name,
+                        dsorg: element.dsOrg,
                         volume: element.volume,
-                        recfm: element.recfm,
-                        blksz: element.blksz,
-                        lrecl: element.lrecl,
-                        migr: element.volume && (element.volume as string).toUpperCase() === "MIGRATED" ? "YES" : "NO",
+                        recfm: element.recordFormat,
+                        blksz: element.blockSize,
+                        lrecl: element.recordLength,
+                        migr: element.isMigrated ? "YES" : "NO",
                     }));
                 }
             }
@@ -64,11 +64,14 @@ export class FtpMvsApi extends AbstractFtpApi implements MainframeInteraction.IM
                 const response = await DataSetUtils.listMembers(connection, dataSetName);
                 if (response) {
                     result.success = true;
+                    // Ideally we could just do `result.apiResponse.items = response;`
                     result.apiResponse.items = response.map((element) => ({
                         member: element.name,
                         changed: element.changed,
                         created: element.created,
-                        id: element.id,
+                        size: element.size,
+                        version: element.version,
+                        // id: element.id, // Removed in zos-node-accessor v2
                     }));
                 }
             }
@@ -84,7 +87,7 @@ export class FtpMvsApi extends AbstractFtpApi implements MainframeInteraction.IM
         const result = this.getDefaultResponse();
         const targetFile = options.file;
         const transferOptions = {
-            transferType: options.binary ? TRANSFER_TYPE_BINARY : TRANSFER_TYPE_ASCII,
+            transferType: CoreUtils.getBinaryTransferModeOrDefault(options.binary),
             localFile: targetFile,
             encoding: options.encoding,
         };
@@ -124,18 +127,19 @@ export class FtpMvsApi extends AbstractFtpApi implements MainframeInteraction.IM
 
     public async putContents(inputFilePath: string, dataSetName: string, options: zosfiles.IUploadOptions): Promise<zosfiles.IZosFilesResponse> {
         const file = path.basename(inputFilePath).replace(/[^a-z0-9]+/gi, "");
-        const member = file.substr(0, MAX_MEMBER_NAME_LEN);
+        const member = file.substring(0, MAX_MEMBER_NAME_LEN);
+        // The above logic seems to create a dummy member name and is technically never used
         let targetDataset: string;
         const end = dataSetName.indexOf("(");
         let dataSetNameWithoutMember: string;
         if (end > 0) {
-            dataSetNameWithoutMember = dataSetName.substr(0, end);
+            dataSetNameWithoutMember = dataSetName.substring(0, end);
         } else {
             dataSetNameWithoutMember = dataSetName;
         }
         const dsAtrribute = await this.dataSet(dataSetNameWithoutMember);
         const dsorg = dsAtrribute.apiResponse.items[0].dsorg;
-        if (dsorg === "PS" || dataSetName.substr(dataSetName.length - 1) == ")") {
+        if (dsorg === "PS" || dataSetName.endsWith(")")) {
             targetDataset = dataSetName;
         } else {
             targetDataset = dataSetName + "(" + member + ")";
@@ -163,7 +167,8 @@ export class FtpMvsApi extends AbstractFtpApi implements MainframeInteraction.IM
             const lrecl: number = dsAtrribute.apiResponse.items[0].lrecl;
             const data = fs.readFileSync(inputFilePath, { encoding: "utf8" });
             const transferOptions: Record<string, any> = {
-                transferType: options.binary ? TRANSFER_TYPE_BINARY : TRANSFER_TYPE_ASCII,
+                // ideally we would type this as `IUploadDataSetOption` but we need `content = " "` below
+                transferType: CoreUtils.getBinaryTransferModeOrDefault(options.binary),
                 localFile: inputFilePath,
                 encoding: options.encoding,
             };
@@ -241,9 +246,8 @@ export class FtpMvsApi extends AbstractFtpApi implements MainframeInteraction.IM
         if (options?.secondary) {
             dcbList.push(`SECONDARY=${options.secondary}`);
         }
-        const dcb = dcbList.join(" ");
         const allocateOptions = {
-            dcb: dcb,
+            dcb: dcbList.join(" "),
         };
         let connection;
         try {
@@ -266,7 +270,7 @@ export class FtpMvsApi extends AbstractFtpApi implements MainframeInteraction.IM
     public async createDataSetMember(dataSetName: string, options?: zosfiles.IUploadOptions): Promise<zosfiles.IZosFilesResponse> {
         const profile = this.checkedProfile();
         const transferOptions = {
-            transferType: options.binary ? TRANSFER_TYPE_BINARY : TRANSFER_TYPE_ASCII,
+            transferType: CoreUtils.getBinaryTransferModeOrDefault(options.binary),
             // we have to provide a single space for content over FTPS, or it will fail to upload
             content: profile.profile.secureFtp ? " " : "",
             encoding: options.encoding,
