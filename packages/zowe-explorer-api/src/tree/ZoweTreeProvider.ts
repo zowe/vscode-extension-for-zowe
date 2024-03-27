@@ -11,26 +11,20 @@
 
 import * as vscode from "vscode";
 import * as globals from "../globals";
-import { PersistentFilters } from "../PersistentFilters";
 import { getIconByNode, getIconById, IconId } from "../generators/icons";
 import * as contextually from "../shared/context";
-import { IZoweTreeNode, imperative, Types, IZoweTree, PersistenceSchemaEnum, Validation } from "@zowe/zowe-explorer-api";
-import { Profiles } from "../Profiles";
-import { setProfile, setSession, errorHandling } from "../utils/ProfilesUtils";
-import { SettingsConfig } from "../utils/SettingsConfig";
-import { ZoweLogger } from "../utils/ZoweLogger";
-import { TreeProviders } from "../shared/TreeProviders";
-import { IZoweProviders } from "../shared/IZoweProviders";
-import { resetValidationSettings } from "../shared/actions";
+import { IZoweTreeNode, imperative, Types, IZoweTree, PersistenceSchemaEnum, Validation, IZoweNodeState } from "../../src";
 
-export class ZoweTreeProvider {
+export class ZoweTreeProvider implements vscode.TreeDataProvider<IZoweTreeNode> {
     // Event Emitters used to notify subscribers that the refresh event has fired
-    public mOnDidChangeTreeData: vscode.EventEmitter<IZoweTreeNode | void> = new vscode.EventEmitter<IZoweTreeNode | undefined>();
-    public readonly onDidChangeTreeData: vscode.Event<IZoweTreeNode | void> = this.mOnDidChangeTreeData.event;
+    public mOnDidChangeTreeData: vscode.EventEmitter<IZoweTreeNode | IZoweTreeNode[] | undefined | null | void> = new vscode.EventEmitter();
+    public readonly onDidChangeTreeData: vscode.Event<IZoweTreeNode | IZoweTreeNode[] | undefined | null | void> = this.mOnDidChangeTreeData.event;
 
     protected mHistory: PersistentFilters;
     protected log: imperative.Logger = imperative.Logger.getAppLogger();
     protected validProfile: number = -1;
+
+    protected nodeMap: Map<string, IZoweNodeState> = new Map();
 
     public constructor(protected persistenceSchema: PersistenceSchemaEnum, public mFavoriteSession: IZoweTreeNode) {
         this.mHistory = new PersistentFilters(this.persistenceSchema);
@@ -45,6 +39,14 @@ export class ZoweTreeProvider {
     public getTreeItem(element: IZoweTreeNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
         ZoweLogger.trace("ZoweTreeProvider.getTreeItem called.");
         return element;
+    }
+
+    public setNodeState(id: string, state: Partial<IZoweNodeState>): void {
+        this.nodeMap.set(id, this.nodeMap.has(id) ? { ...this.nodeMap.get(id), ...state } : state);
+    }
+
+    public getNodeState(id: string): IZoweNodeState | undefined {
+        return this.nodeMap.get(id);
     }
 
     public getParent(element: IZoweTreeNode): IZoweTreeNode {
@@ -278,7 +280,6 @@ export class ZoweTreeProvider {
 
     public async ssoLogin(node: IZoweTreeNode): Promise<void> {
         ZoweLogger.trace("ZoweTreeProvider.ssoLogin called.");
-        await Profiles.getInstance().ssoLogin(node);
         if (contextually.isDsSession(node)) {
             await vscode.commands.executeCommand("zowe.ds.refreshAll");
         } else if (contextually.isUssSession(node)) {
@@ -290,7 +291,6 @@ export class ZoweTreeProvider {
 
     public async ssoLogout(node: IZoweTreeNode): Promise<void> {
         ZoweLogger.trace("ZoweTreeProvider.ssoLogout called.");
-        await Profiles.getInstance().ssoLogout(node);
         if (contextually.isDsSession(node)) {
             await vscode.commands.executeCommand("zowe.ds.refreshAll");
         } else if (contextually.isUssSession(node)) {
@@ -302,12 +302,10 @@ export class ZoweTreeProvider {
 
     public async createZoweSchema(zoweFileProvider: IZoweTree<Types.IZoweNodeType>): Promise<void> {
         ZoweLogger.trace("ZoweTreeProvider.createZoweSchema called.");
-        await Profiles.getInstance().createZoweSchema(zoweFileProvider);
     }
 
     public async createZoweSession(zoweFileProvider: IZoweTree<Types.IZoweNodeType>): Promise<void> {
         ZoweLogger.trace("ZoweTreeProvider.createZoweSession called.");
-        await Profiles.getInstance().createZoweSession(zoweFileProvider);
     }
 
     private deleteSessionForProvider(node: IZoweTreeNode, provider: IZoweTree<IZoweTreeNode>): void {

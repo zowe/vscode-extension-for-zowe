@@ -15,6 +15,7 @@ import * as zosjobs from "@zowe/zos-jobs-for-zowe-sdk";
 import { Sorting } from "./sorting";
 import { ZoweTreeNodeActions } from "./ZoweNodeActions";
 import type { Types } from "../Types";
+import { ZoweTreeProvider } from "./ZoweTreeProvider";
 
 interface TextEncoding {
     kind: "text";
@@ -60,13 +61,18 @@ export interface IZoweTreeNode {
      */
     id?: string;
     /**
+     * The parent node that contains this node (optional)
+     */
+    parent?: IZoweTreeNode;
+    profile?: imperative.IProfileLoaded;
+    /**
      * The tooltip text when you hover over this item.
      */
     tooltip?: string | vscode.MarkdownString | undefined;
     /**
-     * Describes the full path of a file
+     * The tree provider that contains this node.
      */
-    fullPath?: string;
+    treeProvider?: ZoweTreeProvider;
     /**
      * Children nodes of this node
      */
@@ -89,6 +95,10 @@ export interface IZoweTreeNode {
      * whether the node was double-clicked
      */
     wasDoubleClicked?: boolean;
+    /**
+     *
+     */
+    session?: imperative.Session;
     /**
      * Sorting method for this node's children
      */
@@ -134,6 +144,21 @@ export interface IZoweTreeNode {
      */
     setSessionToChoice(sessionObj: imperative.Session): void;
 }
+
+export interface IZoweNodeState {
+    label?: string;
+}
+
+export interface IZoweDatasetState extends IZoweNodeState, Pick<IZoweDatasetTreeNode, "binary" | "encoding" | "encodingMap" | "stats"> {}
+
+export interface IZoweUSSState extends Pick<IZoweUSSTreeNode, "attributes" | "binary" | "encoding" | "encodingMap"> {
+    /**
+     * Describes the full path of a file
+     */
+    fullPath?: string;
+}
+
+export interface IZoweJobState extends Pick<IZoweJobTreeNode, "filtered" | "job" | "owner" | "prefix" | "searchId" | "status"> {}
 
 /**
  * Extended interface for Zowe Dataset tree nodes.

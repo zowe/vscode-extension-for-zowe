@@ -11,7 +11,13 @@
 
 import * as vscode from "vscode";
 import * as imperative from "@zowe/imperative";
-import { IZoweTreeNode } from "./IZoweTreeNode";
+import { IZoweNodeState, IZoweTreeNode } from "./IZoweTreeNode";
+import { ZoweTreeProvider } from "./ZoweTreeProvider";
+
+export interface IZoweTreeNodeOpts extends Required<Pick<IZoweTreeNode, "label" | "collapsibleState" | "parent">> {
+    session: imperative.ISession;
+    profile?: imperative.IProfileLoaded;
+}
 
 /**
  * Common implementation of functions and methods associated with the
@@ -21,11 +27,15 @@ import { IZoweTreeNode } from "./IZoweTreeNode";
  * @class ZoweDatasetNode
  * @extends {vscode.TreeItem}
  */
-export class ZoweTreeNode extends vscode.TreeItem {
+export class ZoweTreeNode extends vscode.TreeItem implements IZoweTreeNode {
     public command: vscode.Command;
     public fullPath = "";
     public dirty = false;
     public children: IZoweTreeNode[] = [];
+    public treeProvider?: ZoweTreeProvider;
+    public parent?: IZoweTreeNode;
+    public profile?: imperative.IProfileLoaded;
+    public session?: imperative.Session;
 
     /**
      * Creates an instance of ZoweDatasetNode
@@ -36,18 +46,22 @@ export class ZoweTreeNode extends vscode.TreeItem {
      * @param {imperative..Session} session
      * @param {string} etag
      */
-    public constructor(
-        label: string | vscode.TreeItemLabel,
-        collapsibleState: vscode.TreeItemCollapsibleState,
-        private mParent: IZoweTreeNode,
-        protected session: imperative.Session,
-        protected profile: imperative.IProfileLoaded
-    ) {
-        super(label, collapsibleState);
+    public constructor(opts: IZoweTreeNodeOpts) {
+        super(opts.label, opts.collapsibleState);
+        this.parent = opts.parent;
         // TODO Check this
-        if (!profile && mParent && mParent.getProfile()) {
-            this.profile = mParent.getProfile();
+        if (!opts.profile && this.parent && this.parent.getProfile()) {
+            this.profile = this.parent.getProfile();
         }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/require-await
+    public async getChildren(): Promise<IZoweTreeNode[]> {
+        return this.children;
+    }
+
+    public getSessionNode(): IZoweTreeNode {
+        return this.treeProvider?.getSessionNode();
     }
 
     /**
@@ -56,7 +70,7 @@ export class ZoweTreeNode extends vscode.TreeItem {
      * @returns {Promise<IZoweTreeNode>}
      */
     public getParent(): IZoweTreeNode {
-        return this.mParent;
+        return this.parent;
     }
 
     /**
@@ -92,6 +106,10 @@ export class ZoweTreeNode extends vscode.TreeItem {
      */
     public getLabel(): string | vscode.TreeItemLabel {
         return this.label;
+    }
+
+    public setState(state: IZoweNodeState): void {
+        this.treeProvider?.setNodeState(this.id, state);
     }
 
     /**

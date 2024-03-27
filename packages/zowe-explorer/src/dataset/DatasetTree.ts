@@ -22,6 +22,7 @@ import {
     IZoweTreeNode,
     Sorting,
     ZosEncoding,
+    IZoweDatasetState,
 } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
@@ -73,6 +74,8 @@ export class DatasetTree extends ZoweTreeProvider implements Types.IZoweDatasetT
     // public memberPattern: IZoweDatasetTreeNode[] = [];
     private treeView: vscode.TreeView<IZoweDatasetTreeNode>;
     public openFiles: Record<string, IZoweDatasetTreeNode> = {};
+
+    protected nodeMap: Map<string, IZoweDatasetState> = new Map();
 
     public constructor() {
         super(
