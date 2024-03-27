@@ -243,10 +243,10 @@ export class DatasetTree extends ZoweTreeProvider implements Types.IZoweDatasetT
         }
         // Line validation
 
-        const favoriteDataSetPattern = /^\[.+\]:\s[a-zA-Z#@$][a-zA-Z0-9#@$-]{0,7}(\.[a-zA-Z#@$][a-zA-Z0-9#@$-]{0,7})*\{p?ds\}$/;
-        const favoriteSearchPattern = /^\[.+\]:\s.*\{session}$/;
+        const favoritePattern = /^\[(.+)\]:\s(?:(.+)\s)?(\{.+\})$/;
         for (const line of lines) {
-            if (!(favoriteDataSetPattern.test(line) || favoriteSearchPattern.test(line))) {
+            const matches = favoritePattern.exec(line);
+            if (matches == null) {
                 ZoweLogger.warn(
                     vscode.l10n.t({
                         message:
@@ -257,19 +257,20 @@ export class DatasetTree extends ZoweTreeProvider implements Types.IZoweDatasetT
                 );
                 continue;
             }
-            // Parse line
-            const profileName = line.substring(1, line.lastIndexOf("]")).trim();
-            const favLabel = line.substring(line.indexOf(":") + 2, line.indexOf("{"));
-            const favContextValue = line.substring(line.indexOf("{") + 1, line.lastIndexOf("}"));
-            // The profile node used for grouping respective favorited items. (Undefined if not created yet.)
-            let profileNodeInFavorites = this.findMatchingProfileInArray(this.mFavorites, profileName);
-            if (profileNodeInFavorites === undefined) {
-                // If favorite node for profile doesn't exist yet, create a new one for it
-                profileNodeInFavorites = this.createProfileNodeForFavs(profileName);
+
+            // the line is in format [LPAR]: <ENTRY.NAME> {pds|ds|session}
+            const [_, profileName, entryName, contextValue] = matches;
+
+            const profNodeInFavs = this.findMatchingProfileInArray(this.mFavorites, profileName);
+            if (profNodeInFavs == null) {
+                this.createProfileNodeForFavs(profileName);
             }
-            // Initialize and attach favorited item nodes under their respective profile node in Favorrites
-            const favChildNodeForProfile = this.initializeFavChildNodeForProfile(favLabel, favContextValue, profileNodeInFavorites);
-            profileNodeInFavorites.children.push(favChildNodeForProfile);
+
+            if (entryName) {
+                // this is a PDS or DS entry that needs to be favorited
+                const node = this.initializeFavChildNodeForProfile(entryName, contextValue, profNodeInFavs);
+                profNodeInFavs.children.push(node);
+            }
         }
     }
 
