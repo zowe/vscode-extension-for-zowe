@@ -13,13 +13,12 @@ import * as vscode from "vscode";
 import * as zosjobs from "@zowe/zos-jobs-for-zowe-sdk";
 import * as globals from "../globals";
 import * as contextually from "../shared/context";
-import { Gui, imperative, IZoweJobTreeNode, Sorting, ZoweTreeNode } from "@zowe/zowe-explorer-api";
+import { Gui, imperative, IZoweJobTreeNode, Sorting, ZoweTreeNode, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { errorHandling, syncSessionNode } from "../utils/ProfilesUtils";
 import { getIconByNode } from "../generators/icons";
 import { JOB_SORT_KEYS } from "./utils";
 import { Profiles } from "../Profiles";
-import { ZoweLogger } from "../utils/ZoweLogger";
 import { encodeJobFile } from "../SpoolProvider";
 import { IZoweJobTreeOpts } from "../shared/IZoweTreeOpts";
 

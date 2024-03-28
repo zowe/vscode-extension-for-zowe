@@ -11,13 +11,11 @@
 
 import * as vscode from "vscode";
 import * as globals from "../globals";
-import { Gui, IZoweTreeNode, imperative } from "@zowe/zowe-explorer-api";
-import { ZoweLogger } from "./ZoweLogger";
+import { Gui, IZoweTreeNode, imperative, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { ProfilesUtils } from "./ProfilesUtils";
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { getSessionType } from "../shared/context";
-import { TreeProviders } from "../shared/TreeProviders";
 
 export class ProfileManagement {
     public static getRegisteredProfileNameList(registeredTree: globals.Trees): string[] {

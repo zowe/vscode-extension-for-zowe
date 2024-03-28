@@ -16,8 +16,16 @@ import * as globals from "../globals";
 import * as path from "path";
 import * as fs from "fs";
 import * as util from "util";
-import { IZoweTreeNode, ZoweTreeNode, FileManagement, Gui, ProfilesCache, MainframeInteraction, imperative } from "@zowe/zowe-explorer-api";
-import { ZoweLogger } from "./ZoweLogger";
+import {
+    IZoweTreeNode,
+    ZoweTreeNode,
+    FileManagement,
+    Gui,
+    ProfilesCache,
+    MainframeInteraction,
+    imperative,
+    ZoweLogger,
+} from "@zowe/zowe-explorer-api";
 import { SettingsConfig } from "./SettingsConfig";
 import { TreeProviders } from "../shared/TreeProviders";
 

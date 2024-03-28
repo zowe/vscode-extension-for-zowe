@@ -12,11 +12,10 @@
 import * as vscode from "vscode";
 import * as globals from "../globals";
 import * as os from "os";
-import { IZoweDatasetTreeNode, IZoweTreeNode, IZoweUSSTreeNode, imperative } from "@zowe/zowe-explorer-api";
+import { IZoweDatasetTreeNode, IZoweTreeNode, IZoweUSSTreeNode, imperative, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { markDocumentUnsaved } from "./workspace";
 import { isTypeUssTreeNode } from "../shared/context";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
-import { ZoweLogger } from "./ZoweLogger";
 import { LocalFileInfo, isZoweDatasetTreeNode, isZoweUSSTreeNode } from "../shared/utils";
 import { ZoweDatasetNode } from "../dataset/ZoweDatasetNode";
 import { ZoweUSSNode } from "../uss/ZoweUSSNode";

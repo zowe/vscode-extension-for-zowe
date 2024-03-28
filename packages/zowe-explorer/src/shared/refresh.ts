@@ -9,14 +9,13 @@
  *
  */
 
-import { IZoweTree, IZoweTreeNode } from "@zowe/zowe-explorer-api";
+import { IZoweTree, IZoweTreeNode, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { syncSessionNode } from "../utils/ProfilesUtils";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { returnIconState } from "./actions";
 import * as contextually from "../shared/context";
 import { removeSession } from "../utils/SessionUtils";
-import { ZoweLogger } from "../utils/ZoweLogger";
 
 /**
  * View (DATA SETS, JOBS, USS) refresh button

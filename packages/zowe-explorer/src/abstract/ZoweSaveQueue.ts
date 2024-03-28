@@ -11,9 +11,8 @@
 
 import * as path from "path";
 import * as vscode from "vscode";
-import { Gui, IZoweTree, IZoweTreeNode } from "@zowe/zowe-explorer-api";
+import { Gui, IZoweTree, IZoweTreeNode, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { markDocumentUnsaved } from "../utils/workspace";
-import { ZoweLogger } from "../utils/ZoweLogger";
 
 interface SaveRequest {
     uploadRequest: (document: SaveRequest["savedFile"], provider: SaveRequest["fileProvider"]) => Promise<void>;

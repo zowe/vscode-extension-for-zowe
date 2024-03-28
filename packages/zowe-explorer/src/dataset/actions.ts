@@ -31,10 +31,9 @@ import { getIconByNode } from "../generators/icons";
 import { ZoweDatasetNode } from "./ZoweDatasetNode";
 import * as contextually from "../shared/context";
 import { markDocumentUnsaved, setFileSaved } from "../utils/workspace";
-import { ZoweLogger } from "../utils/ZoweLogger";
 import { ProfileManagement } from "../utils/ProfileManagement";
 import { LocalFileManagement } from "../utils/LocalFileManagement";
-import { Gui, imperative, IZoweDatasetTreeNode, Validation, Types } from "@zowe/zowe-explorer-api";
+import { Gui, imperative, IZoweDatasetTreeNode, Validation, Types, ZoweLogger } from "@zowe/zowe-explorer-api";
 
 let typeEnum: zosfiles.CreateDataSetTypeEnum;
 // Make a nice new mutable array for the DS properties

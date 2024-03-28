@@ -18,7 +18,7 @@ import { ProfilesUtils } from "./utils/ProfilesUtils";
 import { initializeSpoolProvider } from "./SpoolProvider";
 import { cleanTempDir } from "./utils/TempFolder";
 import { initZoweLogger, registerCommonCommands, registerRefreshCommand, watchConfigProfile, watchForZoweButtonClick } from "./shared/init";
-import { ZoweLogger } from "./utils/ZoweLogger";
+import { ZoweLogger } from "@zowe/zowe-explorer-api";
 import { ZoweSaveQueue } from "./abstract/ZoweSaveQueue";
 import { ZoweLocalStorage } from "./utils/ZoweLocalStorage";
 import { TreeProviders } from "./shared/TreeProviders";

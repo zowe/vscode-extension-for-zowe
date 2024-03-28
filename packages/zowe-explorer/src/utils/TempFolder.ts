@@ -16,8 +16,7 @@ import * as vscode from "vscode";
 import { moveSync } from "fs-extra";
 import { errorHandling } from "../utils/ProfilesUtils";
 import { SettingsConfig } from "./SettingsConfig";
-import { Gui } from "@zowe/zowe-explorer-api";
-import { ZoweLogger } from "./ZoweLogger";
+import { Gui, ZoweLogger } from "@zowe/zowe-explorer-api";
 
 // /**
 //  * Moves temp folder to user defined location in preferences

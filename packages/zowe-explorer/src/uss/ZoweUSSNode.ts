@@ -14,7 +14,17 @@ import * as globals from "../globals";
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
-import { Gui, imperative, IZoweUSSTreeNode, ZoweTreeNode, Types, Validation, MainframeInteraction, ZosEncoding } from "@zowe/zowe-explorer-api";
+import {
+    Gui,
+    imperative,
+    IZoweUSSTreeNode,
+    ZoweTreeNode,
+    Types,
+    Validation,
+    MainframeInteraction,
+    ZosEncoding,
+    ZoweLogger,
+} from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { errorHandling, syncSessionNode } from "../utils/ProfilesUtils";
@@ -23,7 +33,6 @@ import { autoDetectEncoding, fileExistsCaseSensitiveSync, injectAdditionalDataTo
 import * as contextually from "../shared/context";
 import { closeOpenedTextFile } from "../utils/workspace";
 import { UssFileTree, UssFileType, UssFileUtils } from "./FileStructure";
-import { ZoweLogger } from "../utils/ZoweLogger";
 import { IZoweUssTreeOpts } from "../shared/IZoweTreeOpts";
 import { TreeProviders } from "../shared/TreeProviders";
 import { LocalFileInfo } from "../shared/utils";

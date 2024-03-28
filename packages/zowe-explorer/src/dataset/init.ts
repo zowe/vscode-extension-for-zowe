@@ -13,14 +13,13 @@ import * as vscode from "vscode";
 import * as globals from "../globals";
 import * as dsActions from "./actions";
 import * as refreshActions from "../shared/refresh";
-import { IZoweDatasetTreeNode, IZoweTreeNode, ZosEncoding } from "@zowe/zowe-explorer-api";
+import { IZoweDatasetTreeNode, IZoweTreeNode, ZosEncoding, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { DatasetTree, createDatasetTree } from "./DatasetTree";
 import { ZoweDatasetNode } from "./ZoweDatasetNode";
 import * as contextuals from "../shared/context";
 import { getSelectedNodeList } from "../shared/utils";
 import { initSubscribers } from "../shared/init";
-import { ZoweLogger } from "../utils/ZoweLogger";
 import { TreeViewUtils } from "../utils/TreeViewUtils";
 
 export async function initDatasetProvider(context: vscode.ExtensionContext): Promise<DatasetTree> {

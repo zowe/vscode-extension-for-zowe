@@ -26,13 +26,13 @@ import {
     FileManagement,
     IRegisterClient,
     Types,
+    ZoweLogger,
 } from "@zowe/zowe-explorer-api";
 import { errorHandling, FilterDescriptor, FilterItem, ProfilesUtils } from "./utils/ProfilesUtils";
 import { ZoweExplorerApiRegister } from "./ZoweExplorerApiRegister";
 import { ZoweExplorerExtender } from "./ZoweExplorerExtender";
 import * as globals from "./globals";
 import { SettingsConfig } from "./utils/SettingsConfig";
-import { ZoweLogger } from "./utils/ZoweLogger";
 import { TreeProviders } from "./shared/TreeProviders";
 import { ProfileConstants } from "@zowe/core-for-zowe-sdk";
 

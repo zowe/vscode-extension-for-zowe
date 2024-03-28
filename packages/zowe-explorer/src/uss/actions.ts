@@ -15,7 +15,7 @@ import * as globals from "../globals";
 import * as path from "path";
 import { concatChildNodes, uploadContent, getSelectedNodeList } from "../shared/utils";
 import { errorHandling } from "../utils/ProfilesUtils";
-import { Gui, imperative, Validation, IZoweUSSTreeNode, Types } from "@zowe/zowe-explorer-api";
+import { Gui, imperative, Validation, IZoweUSSTreeNode, Types, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { isBinaryFileSync } from "isbinaryfile";
@@ -25,7 +25,6 @@ import { refreshAll } from "../shared/refresh";
 import * as zosfiles from "@zowe/zos-files-for-zowe-sdk";
 import { autoDetectEncoding, fileExistsCaseSensitiveSync } from "./utils";
 import { UssFileTree, UssFileType } from "./FileStructure";
-import { ZoweLogger } from "../utils/ZoweLogger";
 import { AttributeView } from "./AttributeView";
 import { LocalFileManagement } from "../utils/LocalFileManagement";
 

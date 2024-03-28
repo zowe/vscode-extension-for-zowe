@@ -13,11 +13,10 @@ import * as vscode from "vscode";
 import * as globals from "../globals";
 import { getIconById, IconId } from "../generators/icons";
 import * as contextually from "../shared/context";
-import { IZoweTreeNode } from "@zowe/zowe-explorer-api";
+import { IZoweTreeNode, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { errorHandling } from "../utils/ProfilesUtils";
 import { PersistentFilters } from "../PersistentFilters";
-import { ZoweLogger } from "../utils/ZoweLogger";
 
 export class ZoweCommandProvider {
     // eslint-disable-next-line no-magic-numbers

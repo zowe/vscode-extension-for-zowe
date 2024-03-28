@@ -23,9 +23,9 @@ import {
     ProfilesCache,
     IZoweExplorerTreeApi,
     imperative,
+    ZoweLogger,
 } from "@zowe/zowe-explorer-api";
 import { getProfile, ProfilesUtils } from "./utils/ProfilesUtils";
-import { ZoweLogger } from "./utils/ZoweLogger";
 
 /**
  * The Zowe Explorer API Register singleton that gets exposed to other VS Code

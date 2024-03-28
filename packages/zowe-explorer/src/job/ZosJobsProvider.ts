@@ -12,7 +12,17 @@
 import * as vscode from "vscode";
 import * as globals from "../globals";
 import { IJob } from "@zowe/zos-jobs-for-zowe-sdk";
-import { Gui, Validation, imperative, IZoweTree, IZoweTreeNode, IZoweJobTreeNode, PersistenceSchemaEnum, Types } from "@zowe/zowe-explorer-api";
+import {
+    Gui,
+    Validation,
+    imperative,
+    IZoweTree,
+    IZoweTreeNode,
+    IZoweJobTreeNode,
+    PersistenceSchemaEnum,
+    Types,
+    ZoweLogger,
+} from "@zowe/zowe-explorer-api";
 import { FilterItem, errorHandling } from "../utils/ProfilesUtils";
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
@@ -22,7 +32,6 @@ import { ZoweTreeProvider } from "../abstract/ZoweTreeProvider";
 import { getIconByNode } from "../generators/icons";
 import * as contextually from "../shared/context";
 import { SettingsConfig } from "../utils/SettingsConfig";
-import { ZoweLogger } from "../utils/ZoweLogger";
 import SpoolProvider, { encodeJobFile } from "../SpoolProvider";
 import { Poller } from "@zowe/zowe-explorer-api/src/utils";
 import { PollDecorator } from "../utils/DecorationProviders";

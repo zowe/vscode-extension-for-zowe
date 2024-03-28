@@ -11,13 +11,12 @@
 
 import * as vscode from "vscode";
 import * as globals from "../globals";
-import { Gui, Validation, imperative, IZoweTreeNode } from "@zowe/zowe-explorer-api";
+import { Gui, imperative, IZoweTreeNode, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { errorHandling, FilterDescriptor, FilterItem } from "../utils/ProfilesUtils";
 import { ZoweCommandProvider } from "../abstract/ZoweCommandProvider";
 import { SettingsConfig } from "../utils/SettingsConfig";
-import { ZoweLogger } from "../utils/ZoweLogger";
 import * as zosuss from "@zowe/zos-uss-for-zowe-sdk";
 import { ProfileManagement } from "../utils/ProfileManagement";
 

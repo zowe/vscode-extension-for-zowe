@@ -10,8 +10,7 @@
  */
 
 import * as globals from "./globals";
-import { Types } from "@zowe/zowe-explorer-api";
-import { ZoweLogger } from "./utils/ZoweLogger";
+import { Types, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { ZoweLocalStorage } from "./utils/ZoweLocalStorage";
 
 export type PersistentFilter = {

@@ -13,13 +13,12 @@ import * as vscode from "vscode";
 import * as ussActions from "./actions";
 import * as refreshActions from "../shared/refresh";
 import * as globals from "../globals";
-import { IZoweUSSTreeNode, IZoweTreeNode, ZosEncoding } from "@zowe/zowe-explorer-api";
+import { IZoweUSSTreeNode, IZoweTreeNode, ZosEncoding, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import * as contextuals from "../shared/context";
 import { getSelectedNodeList } from "../shared/utils";
 import { USSTree, createUSSTree } from "./USSTree";
 import { initSubscribers } from "../shared/init";
-import { ZoweLogger } from "../utils/ZoweLogger";
 import { TreeViewUtils } from "../utils/TreeViewUtils";
 
 export async function initUSSProvider(context: vscode.ExtensionContext): Promise<USSTree> {

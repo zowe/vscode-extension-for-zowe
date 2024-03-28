@@ -11,11 +11,11 @@
 
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 
-import { Gui, imperative, MessageSeverity, ZoweVsCodeExtension } from "@zowe/zowe-explorer-api";
+import { Gui, imperative, MessageSeverity, ZoweVsCodeExtension } from "..";
 import { padLeft } from "@zowe/core-for-zowe-sdk";
 import * as vscode from "vscode";
 import { join as joinPath } from "path";
-import * as loggerConfig from "../../log4jsconfig.json";
+import * as loggerConfig from "../log4jsconfig.json";
 
 export class ZoweLogger {
     public static zeOutputChannel: vscode.OutputChannel;

@@ -13,9 +13,8 @@ import * as path from "path";
 import * as fs from "fs";
 import * as vscode from "vscode";
 import type { ZoweUSSNode } from "./ZoweUSSNode";
-import { ZoweLogger } from "../utils/ZoweLogger";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
-import { imperative, IZoweUSSTreeNode } from "@zowe/zowe-explorer-api";
+import { imperative, IZoweUSSTreeNode, ZoweLogger } from "@zowe/zowe-explorer-api";
 
 /**
  * Injects extra data to tooltip based on node status and other conditions

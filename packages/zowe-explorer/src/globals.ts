@@ -11,8 +11,7 @@
 
 import * as path from "path";
 import * as vscode from "vscode";
-import { FileManagement, imperative, IZoweTreeNode } from "@zowe/zowe-explorer-api";
-import { ZoweLogger } from "./utils/ZoweLogger";
+import { FileManagement, imperative, IZoweTreeNode, ZoweLogger } from "@zowe/zowe-explorer-api";
 import type { Profiles } from "./Profiles";
 
 // Globals

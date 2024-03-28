@@ -9,9 +9,8 @@
  *
  */
 
-import { imperative, IApiExplorerExtender, MainframeInteraction, Types, Validation, ZoweExplorerZosmf } from "@zowe/zowe-explorer-api";
+import { imperative, IApiExplorerExtender, MainframeInteraction, Types, Validation, ZoweExplorerZosmf, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { ZoweExplorerExtender } from "./ZoweExplorerExtender";
-import { ZoweLogger } from "./utils/ZoweLogger";
 import * as vscode from "vscode";
 
 /**

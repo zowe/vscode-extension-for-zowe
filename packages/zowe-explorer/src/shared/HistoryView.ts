@@ -10,13 +10,12 @@
  */
 
 import * as vscode from "vscode";
-import { WebView, Gui, Types } from "@zowe/zowe-explorer-api";
+import { WebView, Gui, Types, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { ExtensionContext } from "vscode";
 import { IZoweProviders } from "./IZoweProviders";
 import { USSTree } from "../uss/USSTree";
 import { DatasetTree } from "../dataset/DatasetTree";
 import { ZosJobsProvider } from "../job/ZosJobsProvider";
-import { ZoweLogger } from "../utils/ZoweLogger";
 
 type TreeProvider = USSTree | DatasetTree | ZosJobsProvider;
 
