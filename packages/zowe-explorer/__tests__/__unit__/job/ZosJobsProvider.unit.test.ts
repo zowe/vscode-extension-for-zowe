@@ -38,6 +38,7 @@ import { SettingsConfig } from "../../../src/utils/SettingsConfig";
 import { mocked } from "../../../__mocks__/mockUtils";
 import { ZoweLocalStorage } from "../../../src/utils/ZoweLocalStorage";
 import { TreeProviders } from "../../../src/shared/TreeProviders";
+import { JobFSProvider } from "../../../src/job/JobFSProvider";
 
 jest.mock("vscode");
 const showMock = jest.fn();
@@ -127,7 +128,14 @@ async function createGlobalMocks() {
                 WorkspaceFolder: 3,
             };
         }),
+        FileSystemProvider: {
+            createDirectory: jest.fn(),
+            delete: jest.fn(),
+        },
     };
+
+    jest.spyOn(JobFSProvider.instance, "createDirectory").mockImplementation(globalMocks.FileSystemProvider.createDirectory);
+    jest.spyOn(JobFSProvider.instance, "delete").mockImplementation(globalMocks.FileSystemProvider.delete);
     jest.spyOn(Gui, "createTreeView").mockImplementation(globalMocks.createTreeView);
     Object.defineProperty(ProfilesCache, "getConfigInstance", {
         value: jest.fn(() => {
@@ -361,7 +369,6 @@ describe("ZosJobsProvider unit tests - Function initializeFavChildNodeForProfile
             job: new MockJobDetail("testJob(JOB123)"),
         });
         node.contextValue = globals.JOBS_JOB_CONTEXT + globals.FAV_SUFFIX;
-        node.command = { command: "zowe.zosJobsSelectjob", title: "", arguments: [node] };
         const targetIcon = getIconByNode(node);
         if (targetIcon) {
             node.iconPath = targetIcon.path;
