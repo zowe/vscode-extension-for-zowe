@@ -30,7 +30,7 @@ import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { errorHandling, syncSessionNode } from "../utils/ProfilesUtils";
 import { getIconByNode } from "../generators/icons/index";
 import { autoDetectEncoding, fileExistsCaseSensitiveSync, injectAdditionalDataToTooltip } from "../uss/utils";
-import * as contextually from "../shared/context";
+import * as contextually from "@zowe/zowe-explorer-api/src/shared/context";
 import { closeOpenedTextFile } from "../utils/workspace";
 import { UssFileTree, UssFileType, UssFileUtils } from "./FileStructure";
 import { IZoweUssTreeOpts } from "../shared/IZoweTreeOpts";

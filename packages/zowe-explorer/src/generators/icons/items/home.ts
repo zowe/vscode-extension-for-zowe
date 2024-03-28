@@ -11,7 +11,7 @@
 
 import { IconHierarchyType, IconId, IIconItem } from "../index";
 import { getIconPathInResources } from "../../../shared/utils";
-import { isHomeProfile } from "../../../shared/context";
+import { isHomeProfile } from "@zowe/zowe-explorer-api/src/shared/context";
 
 const icon: IIconItem = {
     id: IconId.home,

@@ -27,7 +27,7 @@ import {
 } from "@zowe/zowe-explorer-api";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { getIconByNode } from "../generators/icons";
-import * as contextually from "../shared/context";
+import * as contextually from "@zowe/zowe-explorer-api/src/shared/context";
 import { Profiles } from "../Profiles";
 import * as dayjs from "dayjs";
 import * as fs from "fs";

@@ -9,5 +9,7 @@
  *
  */
 
-export * from "./Poller";
 export * from "./FileManagement";
+export * from "./Poller";
+export * from "./SettingsConfig";
+export * from "./ZoweLocalStorage";

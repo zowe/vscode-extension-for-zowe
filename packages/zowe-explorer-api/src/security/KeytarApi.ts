@@ -33,7 +33,7 @@ export class KeytarApi {
             if (!initialized && keytar) {
                 KeytarCredentialManager.keytar = keytar as Types.KeytarModule;
                 await imperative.CredentialManagerFactory.initialize({
-                    service: Constants.SETTINGS_SCS_DEFAULT,
+                    service: Constants.SCS_DEFAULT,
                     Manager: KeytarCredentialManager,
                     displayName: Constants.ZOWE_EXPLORER,
                 });

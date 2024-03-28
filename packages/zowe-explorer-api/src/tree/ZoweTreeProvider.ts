@@ -10,10 +10,21 @@
  */
 
 import * as vscode from "vscode";
-import * as globals from "../globals";
 import { getIconByNode, getIconById, IconId } from "../generators/icons";
 import * as contextually from "../shared/context";
-import { IZoweTreeNode, imperative, Types, IZoweTree, PersistenceSchemaEnum, Validation, IZoweNodeState } from "../../src";
+import {
+    Constants,
+    IZoweTreeNode,
+    imperative,
+    Types,
+    IZoweTree,
+    PersistenceSchemaEnum,
+    PersistentFilters,
+    Validation,
+    IZoweNodeState,
+    SettingsConfig,
+    ZoweLogger,
+} from "..";
 
 export class ZoweTreeProvider implements vscode.TreeDataProvider<IZoweTreeNode> {
     // Event Emitters used to notify subscribers that the refresh event has fired
@@ -28,6 +39,18 @@ export class ZoweTreeProvider implements vscode.TreeDataProvider<IZoweTreeNode> 
 
     public constructor(protected persistenceSchema: PersistenceSchemaEnum, public mFavoriteSession: IZoweTreeNode) {
         this.mHistory = new PersistentFilters(this.persistenceSchema);
+    }
+
+    public getChildren(element?: IZoweTreeNode): vscode.ProviderResult<IZoweTreeNode[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    public getSessionNode(): IZoweTreeNode {
+        return undefined;
+    }
+
+    public resolveTreeItem?(item: vscode.TreeItem, element: IZoweTreeNode, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TreeItem> {
+        throw new Error("Method not implemented.");
     }
 
     /**
@@ -75,7 +98,7 @@ export class ZoweTreeProvider implements vscode.TreeDataProvider<IZoweTreeNode> 
             const prof = mProfileInfo.getAllProfiles().find((p) => p.profName === node.getProfileName());
             const osLocInfo = mProfileInfo.getOsLocInfo(prof);
             if (osLocInfo?.[0]?.global) {
-                node.contextValue += globals.HOME_SUFFIX;
+                node.contextValue += Constants.HOME_SUFFIX;
             }
         }
     }
@@ -236,7 +259,7 @@ export class ZoweTreeProvider implements vscode.TreeDataProvider<IZoweTreeNode> 
                 (node.contextValue.toLowerCase().includes("session") || node.contextValue.toLowerCase().includes("server"))
             ) {
                 node.contextValue = node.contextValue.replace(/(?<=.*)(_Active|_Inactive|_Unverified)$/, "");
-                node.contextValue = node.contextValue + globals.INACTIVE_CONTEXT;
+                node.contextValue = node.contextValue + Constants.INACTIVE_CONTEXT;
                 const inactiveIcon = getIconById(IconId.sessionInactive);
                 if (inactiveIcon) {
                     node.iconPath = inactiveIcon.path;
@@ -258,7 +281,7 @@ export class ZoweTreeProvider implements vscode.TreeDataProvider<IZoweTreeNode> 
                 (node.contextValue.toLowerCase().includes("session") || node.contextValue.toLowerCase().includes("server"))
             ) {
                 node.contextValue = node.contextValue.replace(/(?<=.*)(_Active|_Inactive|_Unverified)$/, "");
-                node.contextValue = node.contextValue + globals.ACTIVE_CONTEXT;
+                node.contextValue = node.contextValue + Constants.ACTIVE_CONTEXT;
                 const activeIcon = getIconById(IconId.sessionActive);
                 if (activeIcon) {
                     node.iconPath = activeIcon.path;
@@ -271,7 +294,7 @@ export class ZoweTreeProvider implements vscode.TreeDataProvider<IZoweTreeNode> 
                 (node.contextValue.toLowerCase().includes("session") || node.contextValue.toLowerCase().includes("server"))
             ) {
                 node.contextValue = node.contextValue.replace(/(?<=.*)(_Active|_Inactive|_Unverified)$/, "");
-                node.contextValue = node.contextValue + globals.UNVERIFIED_CONTEXT;
+                node.contextValue = node.contextValue + Constants.UNVERIFIED_CONTEXT;
                 Profiles.getInstance().validProfile = Validation.ValidationType.UNVERIFIED;
             }
         }
@@ -315,7 +338,7 @@ export class ZoweTreeProvider implements vscode.TreeDataProvider<IZoweTreeNode> 
     }
 
     private async addSessionForProvider(sessionName?: string, profileType?: string, treeProvider?: IZoweTree<IZoweTreeNode>): Promise<void> {
-        const isUsingAutomaticProfileValidation: boolean = SettingsConfig.getDirectValue(globals.SETTINGS_AUTOMATIC_PROFILE_VALIDATION);
+        const isUsingAutomaticProfileValidation: boolean = SettingsConfig.getDirectValue(Constants.Settings.AUTOMATIC_PROFILE_VALIDATION);
         if (sessionName) {
             await this.loadProfileBySessionName(sessionName, treeProvider, isUsingAutomaticProfileValidation);
         } else {

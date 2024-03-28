@@ -11,12 +11,11 @@
 
 import * as vscode from "vscode";
 import * as globals from "../globals";
-import { Validation, imperative, IZoweTreeNode, Gui, ZoweLogger } from "@zowe/zowe-explorer-api";
+import { Constants, Validation, imperative, IZoweTreeNode, Gui, SettingsConfig, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { FilterDescriptor, FilterItem, errorHandling } from "../utils/ProfilesUtils";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { ZoweCommandProvider } from "../abstract/ZoweCommandProvider";
-import { SettingsConfig } from "../utils/SettingsConfig";
 import { ProfileManagement } from "../utils/ProfileManagement";
 
 /**
@@ -131,7 +130,7 @@ export class MvsCommandHandler extends ZoweCommandProvider {
     private async getQuickPick(hostname: string): Promise<string> {
         ZoweLogger.trace("MvsCommandHandler.getQuickPick called.");
         let response = "";
-        const alwaysEdit: boolean = SettingsConfig.getDirectValue(globals.SETTINGS_COMMANDS_ALWAYS_EDIT);
+        const alwaysEdit: boolean = SettingsConfig.getDirectValue(Constants.Settings.COMMANDS_ALWAYS_EDIT);
         if (this.history.getSearchHistory().length > 0) {
             const createPick = new FilterDescriptor(MvsCommandHandler.defaultDialogText);
             const items: vscode.QuickPickItem[] = this.history.getSearchHistory().map((element) => new FilterItem({ text: element }));

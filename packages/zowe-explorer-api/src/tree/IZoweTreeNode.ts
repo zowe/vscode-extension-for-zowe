@@ -251,7 +251,10 @@ export interface IZoweUSSTreeNode extends IZoweTreeNode {
      * Binary indicator. Default false (text)
      */
     binary?: boolean;
-
+    /**
+     * The full path to the USS file.
+     */
+    fullPath?: string;
     /**
      * File attributes
      */

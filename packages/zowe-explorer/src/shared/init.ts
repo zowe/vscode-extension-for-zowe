@@ -25,7 +25,7 @@ import { saveUSSFile } from "../uss/actions";
 import { ProfilesUtils } from "../utils/ProfilesUtils";
 import { LoggerUtils } from "../utils/LoggerUtils";
 import { ZoweSaveQueue } from "../abstract/ZoweSaveQueue";
-import { SettingsConfig } from "../utils/SettingsConfig";
+import { SettingsConfig } from "@zowe/zowe-explorer-api/src/utils/SettingsConfig";
 import { spoolFilePollEvent } from "../job/actions";
 import { HistoryView } from "./HistoryView";
 import { ProfileManagement } from "../utils/ProfileManagement";
@@ -101,25 +101,25 @@ export function registerCommonCommands(context: vscode.ExtensionContext, provide
     context.subscriptions.push(
         vscode.workspace.onDidChangeConfiguration(async (e) => {
             // If the log folder location has been changed, update current log folder preference
-            if (e.affectsConfiguration(globals.SETTINGS_LOGS_FOLDER_PATH)) {
+            if (e.affectsConfiguration(Constants.Settings.LOGS_FOLDER_PATH)) {
                 await initZoweLogger(context);
             }
             // If the temp folder location has been changed, update current temp folder preference
-            if (e.affectsConfiguration(globals.SETTINGS_TEMP_FOLDER_PATH)) {
-                const updatedPreferencesTempPath: string = SettingsConfig.getDirectValue(globals.SETTINGS_TEMP_FOLDER_PATH);
-                await moveTempFolder(globals.SETTINGS_TEMP_FOLDER_LOCATION, updatedPreferencesTempPath);
+            if (e.affectsConfiguration(Constants.Settings.TEMP_FOLDER_PATH)) {
+                const updatedPreferencesTempPath: string = SettingsConfig.getDirectValue(Constants.Settings.TEMP_FOLDER_PATH);
+                await moveTempFolder(Constants.Settings.TEMP_FOLDER_LOCATION, updatedPreferencesTempPath);
             }
-            if (e.affectsConfiguration(globals.SETTINGS_AUTOMATIC_PROFILE_VALIDATION)) {
+            if (e.affectsConfiguration(Constants.Settings.AUTOMATIC_PROFILE_VALIDATION)) {
                 await Profiles.getInstance().refresh(ZoweExplorerApiRegister.getInstance());
                 await refreshActions.refreshAll(providers.ds);
                 await refreshActions.refreshAll(providers.uss);
                 await refreshActions.refreshAll(providers.job);
             }
-            if (e.affectsConfiguration(globals.SETTINGS_TEMP_FOLDER_HIDE)) {
+            if (e.affectsConfiguration(Constants.Settings.TEMP_FOLDER_HIDE)) {
                 await hideTempFolder(FileManagement.getZoweDir());
             }
 
-            if (e.affectsConfiguration(globals.SETTINGS_SECURE_CREDENTIALS_ENABLED)) {
+            if (e.affectsConfiguration(Constants.Settings.SECURE_CREDENTIALS_ENABLED)) {
                 await vscode.commands.executeCommand("zowe.updateSecureCredentials");
             }
             if (e.affectsConfiguration(globals.LOGGER_SETTINGS)) {
@@ -332,7 +332,7 @@ async function initZoweExplorerUI(): Promise<void> {
     if (globals.ACTIVATED) {
         return;
     }
-    const tempPath: string = SettingsConfig.getDirectValue(globals.SETTINGS_TEMP_FOLDER_PATH);
+    const tempPath: string = SettingsConfig.getDirectValue(Constants.Settings.TEMP_FOLDER_PATH);
     globals.defineGlobals(tempPath);
     await hideTempFolder(FileManagement.getZoweDir());
     ProfilesUtils.initializeZoweTempFolder();

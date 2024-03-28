@@ -12,7 +12,7 @@
 import * as vscode from "vscode";
 import { IZoweProviders } from "./IZoweProviders";
 import { Types } from "@zowe/zowe-explorer-api";
-import { getSessionType } from "./context";
+import { getSessionType } from "@zowe/zowe-explorer-api/src/shared/context";
 
 type ProviderFunctions = {
     ds: (context: vscode.ExtensionContext) => Promise<Types.IZoweDatasetTreeType>;

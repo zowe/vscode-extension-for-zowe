@@ -11,7 +11,7 @@
 
 import { IconHierarchyType, IconId, IIconItem } from "../index";
 import { getIconPathInResources } from "../../../shared/utils";
-import { isDocument } from "../../../shared/context";
+import { isDocument } from "@zowe/zowe-explorer-api/src/shared/context";
 
 const icon: IIconItem = {
     id: IconId.document,

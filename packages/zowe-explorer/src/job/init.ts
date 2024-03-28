@@ -16,7 +16,7 @@ import * as refreshActions from "../shared/refresh";
 import { IZoweJobTreeNode, IZoweTreeNode, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { ZosJobsProvider, createJobsTree } from "./ZosJobsProvider";
-import * as contextuals from "../shared/context";
+import * as contextuals from "@zowe/zowe-explorer-api/src/shared/context";
 import { ZoweJobNode } from "./ZoweJobNode";
 import { getSelectedNodeList } from "../shared/utils";
 import { initSubscribers } from "../shared/init";

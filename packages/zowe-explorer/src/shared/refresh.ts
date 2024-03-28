@@ -14,7 +14,7 @@ import { Profiles } from "../Profiles";
 import { syncSessionNode } from "../utils/ProfilesUtils";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { returnIconState } from "./actions";
-import * as contextually from "../shared/context";
+import * as contextually from "@zowe/zowe-explorer-api/src/shared/context";
 import { removeSession } from "../utils/SessionUtils";
 
 /**

@@ -9,9 +9,7 @@
  *
  */
 
-import * as globals from "./globals";
-import { Types, ZoweLogger } from "@zowe/zowe-explorer-api";
-import { ZoweLocalStorage } from "./utils/ZoweLocalStorage";
+import { Constants, Types, ZoweLocalStorage, ZoweLogger } from "..";
 
 export type PersistentFilter = {
     persistence: boolean;
@@ -42,7 +40,7 @@ export class PersistentFilters {
     private mSessions: string[] = [];
     private mDsTemplates: Types.DataSetAllocTemplate[] = [];
 
-    public constructor(schema: string, private maxSearchHistory = globals.MAX_SEARCH_HISTORY, private maxFileHistory = globals.MAX_FILE_HISTORY) {
+    public constructor(schema: string, private maxSearchHistory = Constants.MAX_SEARCH_HISTORY, private maxFileHistory = Constants.MAX_FILE_HISTORY) {
         ZoweLogger.trace("PersistentFilters.constructor called.");
         this.schema = schema;
         this.initialize();

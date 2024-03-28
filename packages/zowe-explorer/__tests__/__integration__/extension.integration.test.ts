@@ -75,8 +75,8 @@ describe("Extension Integration Tests", async () => {
     testTree.mSessionNodes.push(sessionNode);
 
     let sandbox;
-    const tempSettings = SettingsConfig.getDirectValue(globals.SETTINGS_TEMP_FOLDER_CLEANUP);
-    await SettingsConfig.setDirectValue(globals.SETTINGS_TEMP_FOLDER_CLEANUP, true);
+    const tempSettings = SettingsConfig.getDirectValue(Constants.Settings.TEMP_FOLDER_CLEANUP);
+    await SettingsConfig.setDirectValue(Constants.Settings.TEMP_FOLDER_CLEANUP, true);
 
     beforeEach(async function () {
         this.timeout(TIMEOUT);
@@ -96,11 +96,11 @@ describe("Extension Integration Tests", async () => {
         sandbox.restore();
     });
 
-    const dsSettings = vscode.workspace.getConfiguration(globals.SETTINGS_DS_HISTORY);
+    const dsSettings = vscode.workspace.getConfiguration(Constants.Settings.DS_HISTORY);
 
     after(async () => {
-        await vscode.workspace.getConfiguration().update(globals.SETTINGS_DS_HISTORY, dsSettings, vscode.ConfigurationTarget.Global);
-        await vscode.workspace.getConfiguration().update(globals.SETTINGS_TEMP_FOLDER_CLEANUP, tempSettings, vscode.ConfigurationTarget.Global);
+        await vscode.workspace.getConfiguration().update(Constants.Settings.DS_HISTORY, dsSettings, vscode.ConfigurationTarget.Global);
+        await vscode.workspace.getConfiguration().update(Constants.Settings.TEMP_FOLDER_CLEANUP, tempSettings, vscode.ConfigurationTarget.Global);
     });
 
     describe("Creating a Session", () => {
@@ -881,7 +881,7 @@ describe("Extension Integration Tests", async () => {
         it("should assign the temp folder based on preference", async () => {
             // create target folder
             fs.mkdirSync(testingPath);
-            await vscode.workspace.getConfiguration().update(globals.SETTINGS_TEMP_FOLDER_PATH, testingPath, vscode.ConfigurationTarget.Global);
+            await vscode.workspace.getConfiguration().update(Constants.Settings.TEMP_FOLDER_PATH, testingPath, vscode.ConfigurationTarget.Global);
 
             // expect(extension.ZOWETEMPFOLDER).to.equal(`${testingPath}/temp`);
             expect(globals.ZOWETEMPFOLDER).to.equal(path.join(testingPath, "temp"));
@@ -895,10 +895,10 @@ describe("Extension Integration Tests", async () => {
             fs.mkdirSync(providedPathTwo);
 
             // set first preference
-            await vscode.workspace.getConfiguration().update(globals.SETTINGS_TEMP_FOLDER_PATH, providedPathOne, vscode.ConfigurationTarget.Global);
+            await vscode.workspace.getConfiguration().update(Constants.Settings.TEMP_FOLDER_PATH, providedPathOne, vscode.ConfigurationTarget.Global);
 
             // change preference and test for update
-            await vscode.workspace.getConfiguration().update(globals.SETTINGS_TEMP_FOLDER_PATH, providedPathTwo, vscode.ConfigurationTarget.Global);
+            await vscode.workspace.getConfiguration().update(Constants.Settings.TEMP_FOLDER_PATH, providedPathTwo, vscode.ConfigurationTarget.Global);
 
             // expect(extension.ZOWETEMPFOLDER).to.equal(`${providedPathTwo}/temp`);
             expect(globals.ZOWETEMPFOLDER).to.equal(path.join(providedPathTwo, "temp"));
@@ -910,7 +910,7 @@ describe("Extension Integration Tests", async () => {
 
         it("should assign default temp folder, if preference is empty", async () => {
             const expectedDefaultTemp = path.join(__dirname, "..", "..", "..", "resources", "temp");
-            await vscode.workspace.getConfiguration().update(globals.SETTINGS_TEMP_FOLDER_PATH, "", vscode.ConfigurationTarget.Global);
+            await vscode.workspace.getConfiguration().update(Constants.Settings.TEMP_FOLDER_PATH, "", vscode.ConfigurationTarget.Global);
             expect(globals.ZOWETEMPFOLDER).to.equal(expectedDefaultTemp);
         }).timeout(TIMEOUT);
     });
@@ -920,7 +920,7 @@ describe("Extension Integration Tests", async () => {
             const log = imperative.Logger.getAppLogger();
             await vscode.workspace
                 .getConfiguration()
-                .update(globals.SETTINGS_DS_HISTORY, { persistence: true, favorites: [] }, vscode.ConfigurationTarget.Global);
+                .update(Constants.Settings.DS_HISTORY, { persistence: true, favorites: [] }, vscode.ConfigurationTarget.Global);
             const testTree3 = await createDatasetTree();
             expect(testTree3.mFavorites).to.deep.equal([]);
         }).timeout(TIMEOUT);
@@ -936,7 +936,7 @@ describe("Extension Integration Tests", async () => {
             ];
             await vscode.workspace
                 .getConfiguration()
-                .update(globals.SETTINGS_DS_HISTORY, { persistence: true, favorites }, vscode.ConfigurationTarget.Global);
+                .update(Constants.Settings.DS_HISTORY, { persistence: true, favorites }, vscode.ConfigurationTarget.Global);
             const testTree3 = await createDatasetTree();
             const initializedFavLabels = [`${pattern}.EXT.PDS`, `${pattern}.EXT.PS`, `${pattern}.EXT.SAMPLE.PDS`, `${pattern}.EXT`];
             expect(testTree3.mFavorites[0].children.map((node) => node.label)).to.deep.equal(initializedFavLabels);
@@ -948,7 +948,7 @@ describe("Extension Integration Tests", async () => {
             const favorites = [pattern + ".EXT.PDS[profileName]{pds}", corruptedFavorite];
             await vscode.workspace
                 .getConfiguration()
-                .update(globals.SETTINGS_DS_HISTORY, { persistence: true, favorites }, vscode.ConfigurationTarget.Global);
+                .update(Constants.Settings.DS_HISTORY, { persistence: true, favorites }, vscode.ConfigurationTarget.Global);
             const logWarnStub = sandbox.spy(log, "warn");
             await createDatasetTree();
             expect(logWarnStub.gotCalledOnce);
@@ -969,7 +969,7 @@ describe("Extension Integration Tests", async () => {
             ];
             await vscode.workspace
                 .getConfiguration()
-                .update(globals.SETTINGS_DS_HISTORY, { persistence: true, favorites }, vscode.ConfigurationTarget.Global);
+                .update(Constants.Settings.DS_HISTORY, { persistence: true, favorites }, vscode.ConfigurationTarget.Global);
             await testTree.initializeFavorites();
             const initializedFavProfileLabels = [`${profileName}`, "badProfileName"];
             const goodProfileFavLabels = [`${pattern}.EXT.PDS`, `${pattern}.EXT.PS`, `${pattern}.EXT.SAMPLE.PDS`, `${pattern}.EXT`];

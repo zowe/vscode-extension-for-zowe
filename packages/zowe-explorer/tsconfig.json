@@ -29,7 +29,11 @@
     // Needed in production for vscode-nls localization to work:
     "./node_modules/vscode/vscode.d.ts",
     "./node_modules/vscode/lib/*",
-    "../zowe-explorer-api/src/logger/ZoweLogger.ts"
+    "../zowe-explorer-api/src/logger/ZoweLogger.ts",
+    "../zowe-explorer-api/src/utils/ZoweLocalStorage.ts",
+    "../zowe-explorer-api/src/utils/SettingsConfig.ts",
+    "../zowe-explorer-api/src/shared/context.ts",
+    "../zowe-explorer-api/src/PersistentFilters.ts"
   ],
   "references": [{ "path": "../zowe-explorer-api" }]
 }

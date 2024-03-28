@@ -15,7 +15,7 @@ import { Gui, IZoweDatasetTreeNode, IZoweUSSTreeNode, Types, imperative, ZoweLog
 import { Profiles } from "../Profiles";
 import { filterTreeByString, willForceUpload } from "../shared/utils";
 import { FilterItem, FilterDescriptor } from "../utils/ProfilesUtils";
-import * as contextually from "../shared/context";
+import * as contextually from "@zowe/zowe-explorer-api/src/shared/context";
 import { getIconById, IconId } from "../generators/icons";
 import { markDocumentUnsaved } from "../utils/workspace";
 import { LocalFileManagement } from "../utils/LocalFileManagement";

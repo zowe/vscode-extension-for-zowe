@@ -11,7 +11,7 @@
 
 import { IconHierarchyType, IconId, IIconItem } from "../index";
 import { getIconPathInResources } from "../../../shared/utils";
-import { isFilterFolder } from "../../../shared/context";
+import { isFilterFolder } from "@zowe/zowe-explorer-api/src/shared/context";
 
 const icon: IIconItem = {
     id: IconId.filterFolder,

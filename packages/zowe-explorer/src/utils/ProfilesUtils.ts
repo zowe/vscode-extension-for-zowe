@@ -26,7 +26,7 @@ import {
     imperative,
     ZoweLogger,
 } from "@zowe/zowe-explorer-api";
-import { SettingsConfig } from "./SettingsConfig";
+import { SettingsConfig } from "@zowe/zowe-explorer-api/src/utils/SettingsConfig";
 import { TreeProviders } from "../shared/TreeProviders";
 
 /*************************************************************************************************************
@@ -231,7 +231,7 @@ export class ProfilesUtils {
      */
     public static updateCredentialManagerSetting(credentialManager?: string): void {
         ZoweLogger.trace("ProfilesUtils.updateCredentialManagerSetting called.");
-        const settingEnabled: boolean = SettingsConfig.getDirectValue(globals.SETTINGS_SECURE_CREDENTIALS_ENABLED);
+        const settingEnabled: boolean = SettingsConfig.getDirectValue(Constants.Settings.SECURE_CREDENTIALS_ENABLED);
         if (settingEnabled) {
             if (settingEnabled && credentialManager) {
                 this.PROFILE_SECURITY = credentialManager;
@@ -345,14 +345,14 @@ export class ProfilesUtils {
                     if (selection === optionYes) {
                         ProfilesUtils.updateCredentialManagerSetting(credentialManager.credMgrDisplayName);
                         SettingsConfig.setDirectValue(
-                            globals.SETTINGS_CHECK_FOR_CUSTOM_CREDENTIAL_MANAGERS,
+                            Constants.Settings.CHECK_FOR_CUSTOM_CREDENTIAL_MANAGERS,
                             false,
                             vscode.ConfigurationTarget.Global
                         );
                     }
                     if (selection === optionDontAskAgain) {
                         SettingsConfig.setDirectValue(
-                            globals.SETTINGS_CHECK_FOR_CUSTOM_CREDENTIAL_MANAGERS,
+                            Constants.Settings.CHECK_FOR_CUSTOM_CREDENTIAL_MANAGERS,
                             false,
                             vscode.ConfigurationTarget.Global
                         );
@@ -400,10 +400,10 @@ export class ProfilesUtils {
 
     public static async getProfileInfo(): Promise<imperative.ProfileInfo> {
         ZoweLogger.trace("ProfilesUtils.getProfileInfo called.");
-        const hasSecureCredentialManagerEnabled: boolean = SettingsConfig.getDirectValue(globals.SETTINGS_SECURE_CREDENTIALS_ENABLED);
+        const hasSecureCredentialManagerEnabled: boolean = SettingsConfig.getDirectValue(Constants.Settings.SECURE_CREDENTIALS_ENABLED);
 
         if (hasSecureCredentialManagerEnabled) {
-            const shouldCheckForCustomCredentialManagers = SettingsConfig.getDirectValue(globals.SETTINGS_CHECK_FOR_CUSTOM_CREDENTIAL_MANAGERS);
+            const shouldCheckForCustomCredentialManagers = SettingsConfig.getDirectValue(Constants.Settings.CHECK_FOR_CUSTOM_CREDENTIAL_MANAGERS);
             if (shouldCheckForCustomCredentialManagers) {
                 await this.fetchRegisteredPlugins();
             }

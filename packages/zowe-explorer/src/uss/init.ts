@@ -15,7 +15,7 @@ import * as refreshActions from "../shared/refresh";
 import * as globals from "../globals";
 import { IZoweUSSTreeNode, IZoweTreeNode, ZosEncoding, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
-import * as contextuals from "../shared/context";
+import * as contextuals from "@zowe/zowe-explorer-api/src/shared/context";
 import { getSelectedNodeList } from "../shared/utils";
 import { USSTree, createUSSTree } from "./USSTree";
 import { initSubscribers } from "../shared/init";

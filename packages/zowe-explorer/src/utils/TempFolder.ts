@@ -15,7 +15,7 @@ import * as globals from "../globals";
 import * as vscode from "vscode";
 import { moveSync } from "fs-extra";
 import { errorHandling } from "../utils/ProfilesUtils";
-import { SettingsConfig } from "./SettingsConfig";
+import { SettingsConfig } from "@zowe/zowe-explorer-api/src/utils/SettingsConfig";
 import { Gui, ZoweLogger } from "@zowe/zowe-explorer-api";
 
 // /**
@@ -99,7 +99,7 @@ export function cleanDir(directory: string): void {
 export function cleanTempDir(): Promise<void> {
     ZoweLogger.trace("TempFolder.cleanTempDir called.");
     // Get temp folder cleanup preference from settings
-    const preferencesTempCleanupEnabled: boolean = SettingsConfig.getDirectValue(globals.SETTINGS_TEMP_FOLDER_CLEANUP);
+    const preferencesTempCleanupEnabled: boolean = SettingsConfig.getDirectValue(Constants.Settings.TEMP_FOLDER_CLEANUP);
     // logger hasn't necessarily been initialized yet, don't use the `log` in this function
     if (!fs.existsSync(globals.ZOWETEMPFOLDER) || !preferencesTempCleanupEnabled) {
         return;
@@ -127,7 +127,7 @@ export function cleanTempDir(): Promise<void> {
  */
 export async function hideTempFolder(zoweDir: string): Promise<void> {
     ZoweLogger.trace("TempFolder.hideTempFolder called.");
-    if (SettingsConfig.getDirectValue<boolean>(globals.SETTINGS_TEMP_FOLDER_HIDE)) {
+    if (SettingsConfig.getDirectValue<boolean>(Constants.Settings.TEMP_FOLDER_HIDE)) {
         await SettingsConfig.setDirectValue("files.exclude", { [zoweDir]: true, [globals.ZOWETEMPFOLDER]: true });
     }
 }

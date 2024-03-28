@@ -72,10 +72,10 @@ describe("USSTree Integration Tests", async () => {
         sandbox.restore();
     });
 
-    const oldSettings = vscode.workspace.getConfiguration(globals.SETTINGS_USS_HISTORY);
+    const oldSettings = vscode.workspace.getConfiguration(Constants.Settings.USS_HISTORY);
 
     after(async () => {
-        await vscode.workspace.getConfiguration().update(globals.SETTINGS_USS_HISTORY, oldSettings, vscode.ConfigurationTarget.Global);
+        await vscode.workspace.getConfiguration().update(Constants.Settings.USS_HISTORY, oldSettings, vscode.ConfigurationTarget.Global);
     });
 
     /*************************************************************************************************************

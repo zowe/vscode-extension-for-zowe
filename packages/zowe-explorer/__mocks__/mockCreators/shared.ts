@@ -16,7 +16,7 @@ import * as vscode from "vscode";
 import { imperative, Validation, IZoweTreeNode } from "@zowe/zowe-explorer-api";
 import { FilterDescriptor } from "../../src/utils/ProfilesUtils";
 import * as zosmf from "@zowe/zosmf-for-zowe-sdk";
-import { SettingsConfig } from "../../src/utils/SettingsConfig";
+import { SettingsConfig } from "@zowe/zowe-explorer-api/src/utils/SettingsConfig";
 import * as globals from "../../src/globals";
 import { Profiles } from "../../src/Profiles";
 

@@ -10,13 +10,16 @@
  */
 
 export * from "./extend";
+export * from "./globals/Constants";
 export * from "./globals/Gui";
 export * from "./globals/GuiOptions";
 export * from "./logger";
+export * from "./PersistentFilters";
 export * from "./profiles";
 export * from "./security";
 export * from "./tree";
 export * from "./utils";
+export * as contextually from "./shared/context";
 export * from "./vscode";
 export * from "./Types";
 export * as imperative from "@zowe/imperative";

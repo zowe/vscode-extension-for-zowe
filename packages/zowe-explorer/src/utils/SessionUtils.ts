@@ -11,7 +11,7 @@
 
 import { IZoweTree, IZoweTreeNode, PersistenceSchemaEnum, ZoweLogger } from "@zowe/zowe-explorer-api";
 import * as globals from "../globals";
-import { SettingsConfig } from "./SettingsConfig";
+import { SettingsConfig } from "@zowe/zowe-explorer-api/src/utils/SettingsConfig";
 
 export async function removeSession(treeProvider: IZoweTree<IZoweTreeNode>, profileName: string): Promise<void> {
     ZoweLogger.trace("SessionUtils.removeSession called.");
@@ -19,16 +19,16 @@ export async function removeSession(treeProvider: IZoweTree<IZoweTreeNode>, prof
     let schema;
     switch (treeType) {
         case PersistenceSchemaEnum.Dataset:
-            schema = globals.SETTINGS_DS_HISTORY;
+            schema = Constants.Settings.DS_HISTORY;
             break;
         case PersistenceSchemaEnum.USS:
-            schema = globals.SETTINGS_USS_HISTORY;
+            schema = Constants.Settings.USS_HISTORY;
             break;
         case PersistenceSchemaEnum.Job:
-            schema = globals.SETTINGS_JOBS_HISTORY;
+            schema = Constants.Settings.JOBS_HISTORY;
             break;
     }
-    if (treeType !== globals.SETTINGS_JOBS_HISTORY) {
+    if (treeType !== Constants.Settings.JOBS_HISTORY) {
         // Delete from file history
         const fileHistory: string[] = treeProvider.getFileHistory();
         fileHistory

@@ -14,7 +14,7 @@ import * as globals from "../globals";
 import * as os from "os";
 import { IZoweDatasetTreeNode, IZoweTreeNode, IZoweUSSTreeNode, imperative, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { markDocumentUnsaved } from "./workspace";
-import { isTypeUssTreeNode } from "../shared/context";
+import { isTypeUssTreeNode } from "@zowe/zowe-explorer-api/src/shared/context";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { LocalFileInfo, isZoweDatasetTreeNode, isZoweUSSTreeNode } from "../shared/utils";
 import { ZoweDatasetNode } from "../dataset/ZoweDatasetNode";

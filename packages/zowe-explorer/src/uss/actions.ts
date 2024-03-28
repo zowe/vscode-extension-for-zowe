@@ -19,7 +19,7 @@ import { Gui, imperative, Validation, IZoweUSSTreeNode, Types, ZoweLogger } from
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { isBinaryFileSync } from "isbinaryfile";
-import * as contextually from "../shared/context";
+import * as contextually from "@zowe/zowe-explorer-api/src/shared/context";
 import { markDocumentUnsaved, setFileSaved } from "../utils/workspace";
 import { refreshAll } from "../shared/refresh";
 import * as zosfiles from "@zowe/zos-files-for-zowe-sdk";

@@ -11,7 +11,7 @@
 
 import { IconHierarchyType, IconId, IIconItem } from "../index";
 import { getIconPathInResources } from "../../../shared/utils";
-import { isMigrated } from "../../../shared/context";
+import { isMigrated } from "@zowe/zowe-explorer-api/src/shared/context";
 
 const migrated: IIconItem = {
     id: IconId.migrated,

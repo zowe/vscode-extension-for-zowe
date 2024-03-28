@@ -72,10 +72,10 @@ describe("ussNodeActions integration test", async () => {
         sandbox.restore();
     });
 
-    const oldSettings = vscode.workspace.getConfiguration(globals.SETTINGS_USS_HISTORY);
+    const oldSettings = vscode.workspace.getConfiguration(Constants.Settings.USS_HISTORY);
 
     after(async () => {
-        await vscode.workspace.getConfiguration().update(globals.SETTINGS_USS_HISTORY, oldSettings, vscode.ConfigurationTarget.Global);
+        await vscode.workspace.getConfiguration().update(Constants.Settings.USS_HISTORY, oldSettings, vscode.ConfigurationTarget.Global);
     });
 
     describe("Initialize USS Favorites", async () => {
@@ -93,7 +93,7 @@ describe("ussNodeActions integration test", async () => {
             ];
             await vscode.workspace
                 .getConfiguration()
-                .update(globals.SETTINGS_USS_HISTORY, { persistence: true, favorites }, vscode.ConfigurationTarget.Global);
+                .update(Constants.Settings.USS_HISTORY, { persistence: true, favorites }, vscode.ConfigurationTarget.Global);
             await testTree.initializeFavorites();
             const initializedFavProfileLabels = [`${profileName}`, "badProfileName"];
             const goodProfileFavLabels = ["tester1", "testfile1", "tester2", "testfile2"];

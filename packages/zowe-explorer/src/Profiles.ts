@@ -12,6 +12,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import {
+    Constants,
     Gui,
     imperative,
     IZoweTree,
@@ -26,13 +27,13 @@ import {
     FileManagement,
     IRegisterClient,
     Types,
+    SettingsConfig,
     ZoweLogger,
 } from "@zowe/zowe-explorer-api";
 import { errorHandling, FilterDescriptor, FilterItem, ProfilesUtils } from "./utils/ProfilesUtils";
 import { ZoweExplorerApiRegister } from "./ZoweExplorerApiRegister";
 import { ZoweExplorerExtender } from "./ZoweExplorerExtender";
 import * as globals from "./globals";
-import { SettingsConfig } from "./utils/SettingsConfig";
 import { TreeProviders } from "./shared/TreeProviders";
 import { ProfileConstants } from "@zowe/core-for-zowe-sdk";
 
@@ -56,9 +57,9 @@ export class Profiles extends ProfilesCache {
 
     public loadedProfile: imperative.IProfileLoaded;
     public validProfile: Validation.ValidationType = Validation.ValidationType.INVALID;
-    private dsSchema: string = globals.SETTINGS_DS_HISTORY;
-    private ussSchema: string = globals.SETTINGS_USS_HISTORY;
-    private jobsSchema: string = globals.SETTINGS_JOBS_HISTORY;
+    private dsSchema: string = Constants.Settings.DS_HISTORY;
+    private ussSchema: string = Constants.Settings.USS_HISTORY;
+    private jobsSchema: string = Constants.Settings.JOBS_HISTORY;
     private mProfileInfo: imperative.ProfileInfo;
     private profilesOpCancelled = vscode.l10n.t(`Operation Cancelled`);
     private manualEditMsg = vscode.l10n.t(
@@ -185,12 +186,12 @@ export class Profiles extends ProfilesCache {
         ZoweLogger.trace("Profiles.disableValidationContext called.");
         const theProfile: imperative.IProfileLoaded = node.getProfile();
         this.validationArraySetup(theProfile, false);
-        if (node.contextValue.includes(globals.VALIDATE_SUFFIX)) {
-            node.contextValue = node.contextValue.replace(globals.VALIDATE_SUFFIX, globals.NO_VALIDATE_SUFFIX);
-        } else if (node.contextValue.includes(globals.NO_VALIDATE_SUFFIX)) {
+        if (node.contextValue.includes(Constants.VALIDATE_SUFFIX)) {
+            node.contextValue = node.contextValue.replace(Constants.VALIDATE_SUFFIX, Constants.NO_VALIDATE_SUFFIX);
+        } else if (node.contextValue.includes(Constants.NO_VALIDATE_SUFFIX)) {
             return node;
         } else {
-            node.contextValue += globals.VALIDATE_SUFFIX;
+            node.contextValue += Constants.VALIDATE_SUFFIX;
         }
         return node;
     }
@@ -210,12 +211,12 @@ export class Profiles extends ProfilesCache {
         ZoweLogger.trace("Profiles.enableValidationContext called.");
         const theProfile: imperative.IProfileLoaded = node.getProfile();
         this.validationArraySetup(theProfile, true);
-        if (node.contextValue.includes(globals.NO_VALIDATE_SUFFIX)) {
-            node.contextValue = node.contextValue.replace(globals.NO_VALIDATE_SUFFIX, globals.VALIDATE_SUFFIX);
-        } else if (node.contextValue.includes(globals.VALIDATE_SUFFIX)) {
+        if (node.contextValue.includes(Constants.NO_VALIDATE_SUFFIX)) {
+            node.contextValue = node.contextValue.replace(Constants.NO_VALIDATE_SUFFIX, Constants.VALIDATE_SUFFIX);
+        } else if (node.contextValue.includes(Constants.VALIDATE_SUFFIX)) {
             return node;
         } else {
-            node.contextValue += globals.VALIDATE_SUFFIX;
+            node.contextValue += Constants.VALIDATE_SUFFIX;
         }
 
         return node;
@@ -883,7 +884,7 @@ export class Profiles extends ProfilesCache {
         if (!profileName) {
             return [];
         }
-        const usingSecureCreds = SettingsConfig.getDirectValue(globals.SETTINGS_SECURE_CREDENTIALS_ENABLED);
+        const usingSecureCreds = SettingsConfig.getDirectValue(Constants.Settings.SECURE_CREDENTIALS_ENABLED);
         const profInfo = await this.getProfileInfo();
         if (usingSecureCreds && profInfo.getTeamConfig().exists) {
             return profInfo.getTeamConfig().api.secure.securePropsForProfile(profileName);
@@ -1104,7 +1105,7 @@ export class Profiles extends ProfilesCache {
     // Remove secure properties and set autoStore to false when vscode setting is true
     private createNonSecureProfile(newConfig: imperative.IConfig): void {
         ZoweLogger.trace("Profiles.createNonSecureProfile called.");
-        const isSecureCredsEnabled: boolean = SettingsConfig.getDirectValue(globals.SETTINGS_SECURE_CREDENTIALS_ENABLED);
+        const isSecureCredsEnabled: boolean = SettingsConfig.getDirectValue(Constants.Settings.SECURE_CREDENTIALS_ENABLED);
         if (!isSecureCredsEnabled) {
             for (const profile of Object.entries(newConfig?.profiles)) {
                 delete newConfig.profiles[profile[0]].secure;

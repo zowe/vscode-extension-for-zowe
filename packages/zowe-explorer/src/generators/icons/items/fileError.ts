@@ -11,7 +11,7 @@
 
 import { IconHierarchyType, IconId, IIconItem } from "../index";
 import { getIconPathInResources } from "../../../shared/utils";
-import { hasFileError } from "../../../shared/context";
+import { hasFileError } from "@zowe/zowe-explorer-api/src/shared/context";
 
 const fileError: IIconItem = {
     id: IconId.fileError,

@@ -15,7 +15,7 @@ import { Gui, IZoweTreeNode, imperative, ZoweLogger } from "@zowe/zowe-explorer-
 import { ProfilesUtils } from "./ProfilesUtils";
 import { Profiles } from "../Profiles";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
-import { getSessionType } from "../shared/context";
+import { getSessionType } from "@zowe/zowe-explorer-api/src/shared/context";
 
 export class ProfileManagement {
     public static getRegisteredProfileNameList(registeredTree: globals.Trees): string[] {

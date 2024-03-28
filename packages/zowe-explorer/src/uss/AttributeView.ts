@@ -12,7 +12,7 @@
 import { Types, Gui, MainframeInteraction, IZoweUSSTreeNode, WebView } from "@zowe/zowe-explorer-api";
 import { Disposable, ExtensionContext } from "vscode";
 import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
-import * as contextually from "../shared/context";
+import * as contextually from "@zowe/zowe-explorer-api/src/shared/context";
 
 export class AttributeView extends WebView {
     private treeProvider: Types.IZoweUSSTreeType;

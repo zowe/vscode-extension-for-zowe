@@ -60,10 +60,10 @@ describe("DatasetTree Integration Tests", async () => {
     sessNode.pattern = pattern + ".PUBLIC";
     const testTree = new DatasetTree();
     testTree.mSessionNodes.splice(-1, 0, sessNode);
-    const oldSettings = vscode.workspace.getConfiguration(globals.SETTINGS_DS_HISTORY);
+    const oldSettings = vscode.workspace.getConfiguration(Constants.Settings.DS_HISTORY);
 
     after(async () => {
-        await vscode.workspace.getConfiguration().update(globals.SETTINGS_DS_HISTORY, oldSettings, vscode.ConfigurationTarget.Global);
+        await vscode.workspace.getConfiguration().update(Constants.Settings.DS_HISTORY, oldSettings, vscode.ConfigurationTarget.Global);
     });
     let sandbox;
 

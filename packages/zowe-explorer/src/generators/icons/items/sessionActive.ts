@@ -11,7 +11,7 @@
 
 import { IconHierarchyType, IconId, IIconItem } from "../index";
 import { getIconPathInResources } from "../../../shared/utils";
-import { isSessionActive } from "../../../shared/context";
+import { isSessionActive } from "@zowe/zowe-explorer-api/src/shared/context";
 
 const icon: IIconItem = {
     id: IconId.sessionActive,

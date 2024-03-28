@@ -10,18 +10,19 @@
  */
 
 import * as vscode from "vscode";
-import * as meta from "../../package.json";
-import { ZoweLogger } from "@zowe/zowe-explorer-api";
+import { ZoweLogger } from "..";
 
 export class ZoweLocalStorage {
     private static storage: vscode.Memento;
+    private static meta?: any;
     public static initializeZoweLocalStorage(state: vscode.Memento): void {
         ZoweLocalStorage.storage = state;
+        ZoweLocalStorage.meta = vscode.extensions.getExtension("zowe.vscode-extension-for-zowe").packageJSON;
     }
 
     public static getValue<T>(key: string): T {
         ZoweLogger.trace("ZoweLocalStorage.getValue called.");
-        const defaultValue = meta.contributes.configuration.properties[key]?.default;
+        const defaultValue = ZoweLocalStorage.meta?.contributes.configuration.properties[key]?.default;
         return ZoweLocalStorage.storage.get<T>(key, defaultValue);
     }
 

@@ -11,7 +11,7 @@
 
 import { IconHierarchyType, IconId, IIconItem } from "../index";
 import { getIconPathInResources } from "../../../shared/utils";
-import { isVsam } from "../../../shared/context";
+import { isVsam } from "@zowe/zowe-explorer-api/src/shared/context";
 
 const vsam: IIconItem = {
     id: IconId.vsam,

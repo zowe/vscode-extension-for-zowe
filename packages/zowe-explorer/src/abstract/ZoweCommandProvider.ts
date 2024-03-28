@@ -10,18 +10,15 @@
  */
 
 import * as vscode from "vscode";
-import * as globals from "../globals";
 import { getIconById, IconId } from "../generators/icons";
-import * as contextually from "../shared/context";
-import { IZoweTreeNode, ZoweLogger } from "@zowe/zowe-explorer-api";
+import { contextually, Constants, IZoweTreeNode, PersistentFilters, ZoweLogger } from "@zowe/zowe-explorer-api";
 import { Profiles } from "../Profiles";
 import { errorHandling } from "../utils/ProfilesUtils";
-import { PersistentFilters } from "../PersistentFilters";
 
 export class ZoweCommandProvider {
     // eslint-disable-next-line no-magic-numbers
     private static readonly totalFilters: number = 10;
-    private static readonly persistenceSchema: string = globals.SETTINGS_COMMANDS_HISTORY;
+    private static readonly persistenceSchema: string = Constants.Settings.COMMANDS_HISTORY;
 
     public history: PersistentFilters;
     // Event Emitters used to notify subscribers that the refresh event has fired
@@ -61,7 +58,7 @@ export class ZoweCommandProvider {
                 (node.contextValue.toLowerCase().includes("session") || node.contextValue.toLowerCase().includes("server"))
             ) {
                 node.contextValue = node.contextValue.replace(/(?<=.*)(_Active|_Inactive|_Unverified)$/, "");
-                node.contextValue = node.contextValue + globals.INACTIVE_CONTEXT;
+                node.contextValue = node.contextValue + Constants.INACTIVE_CONTEXT;
                 const inactiveIcon = getIconById(IconId.sessionInactive);
                 if (inactiveIcon) {
                     node.iconPath = inactiveIcon.path;
@@ -82,7 +79,7 @@ export class ZoweCommandProvider {
                 (node.contextValue.toLowerCase().includes("session") || node.contextValue.toLowerCase().includes("server"))
             ) {
                 node.contextValue = node.contextValue.replace(/(?<=.*)(_Active|_Inactive|_Unverified)$/, "");
-                node.contextValue = node.contextValue + globals.ACTIVE_CONTEXT;
+                node.contextValue = node.contextValue + Constants.ACTIVE_CONTEXT;
                 const activeIcon = getIconById(IconId.sessionActive);
                 if (activeIcon) {
                     node.iconPath = activeIcon.path;
@@ -94,7 +91,7 @@ export class ZoweCommandProvider {
                 (node.contextValue.toLowerCase().includes("session") || node.contextValue.toLowerCase().includes("server"))
             ) {
                 node.contextValue = node.contextValue.replace(/(?<=.*)(_Active|_Inactive|_Unverified)$/, "");
-                node.contextValue = node.contextValue + globals.UNVERIFIED_CONTEXT;
+                node.contextValue = node.contextValue + Constants.UNVERIFIED_CONTEXT;
             }
         }
         this.refresh();

@@ -30,7 +30,7 @@ import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import * as zosfiles from "@zowe/zos-files-for-zowe-sdk";
 import { markDocumentUnsaved } from "../utils/workspace";
 import { errorHandling } from "../utils/ProfilesUtils";
-import { ZoweLocalStorage } from "../utils/ZoweLocalStorage";
+import { ZoweLocalStorage } from "@zowe/zowe-explorer-api/src/utils/ZoweLocalStorage";
 
 export enum JobSubmitDialogOpts {
     Disabled,

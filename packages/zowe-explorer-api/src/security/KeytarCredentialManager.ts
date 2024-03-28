@@ -42,7 +42,7 @@ export class KeytarCredentialManager extends imperative.AbstractCredentialManage
      * Combined list of services that credentials may be stored under
      */
     private allServices: string[] = [
-        Constants.SETTINGS_SCS_DEFAULT,
+        Constants.SCS_DEFAULT,
         Constants.SCS_ZOWE_PLUGIN,
         Constants.SCS_BRIGHTSIDE,
         Constants.SCS_ZOWE_CLI,

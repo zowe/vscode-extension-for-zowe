@@ -29,11 +29,10 @@ import { ZoweExplorerApiRegister } from "../ZoweExplorerApiRegister";
 import { Profiles } from "../Profiles";
 import { getIconByNode } from "../generators/icons";
 import { ZoweDatasetNode } from "./ZoweDatasetNode";
-import * as contextually from "../shared/context";
 import { markDocumentUnsaved, setFileSaved } from "../utils/workspace";
 import { ProfileManagement } from "../utils/ProfileManagement";
 import { LocalFileManagement } from "../utils/LocalFileManagement";
-import { Gui, imperative, IZoweDatasetTreeNode, Validation, Types, ZoweLogger } from "@zowe/zowe-explorer-api";
+import { contextually, Gui, imperative, IZoweDatasetTreeNode, Validation, Types, ZoweLogger } from "@zowe/zowe-explorer-api";
 
 let typeEnum: zosfiles.CreateDataSetTypeEnum;
 // Make a nice new mutable array for the DS properties
@@ -460,27 +459,27 @@ export function getDataSetTypeAndOptions(type: string): {
     switch (type) {
         case localizedStrings.dsBinary:
             typeEnum = zosfiles.CreateDataSetTypeEnum.DATA_SET_BINARY;
-            createOptions = vscode.workspace.getConfiguration(globals.SETTINGS_DS_DEFAULT_BINARY);
+            createOptions = vscode.workspace.getConfiguration(Constants.Settings.DS_DEFAULT_BINARY);
             break;
         case localizedStrings.dsC:
             typeEnum = zosfiles.CreateDataSetTypeEnum.DATA_SET_C;
-            createOptions = vscode.workspace.getConfiguration(globals.SETTINGS_DS_DEFAULT_C);
+            createOptions = vscode.workspace.getConfiguration(Constants.Settings.DS_DEFAULT_C);
             break;
         case localizedStrings.dsClassic:
             typeEnum = zosfiles.CreateDataSetTypeEnum.DATA_SET_CLASSIC;
-            createOptions = vscode.workspace.getConfiguration(globals.SETTINGS_DS_DEFAULT_CLASSIC);
+            createOptions = vscode.workspace.getConfiguration(Constants.Settings.DS_DEFAULT_CLASSIC);
             break;
         case localizedStrings.dsPartitioned:
             typeEnum = zosfiles.CreateDataSetTypeEnum.DATA_SET_PARTITIONED;
-            createOptions = vscode.workspace.getConfiguration(globals.SETTINGS_DS_DEFAULT_PDS);
+            createOptions = vscode.workspace.getConfiguration(Constants.Settings.DS_DEFAULT_PDS);
             break;
         case localizedStrings.dsExtended:
             typeEnum = zosfiles.CreateDataSetTypeEnum.DATA_SET_BLANK;
-            createOptions = vscode.workspace.getConfiguration(globals.SETTINGS_DS_DEFAULT_EXTENDED);
+            createOptions = vscode.workspace.getConfiguration(Constants.Settings.DS_DEFAULT_EXTENDED);
             break;
         case localizedStrings.dsSequential:
             typeEnum = zosfiles.CreateDataSetTypeEnum.DATA_SET_SEQUENTIAL;
-            createOptions = vscode.workspace.getConfiguration(globals.SETTINGS_DS_DEFAULT_PS);
+            createOptions = vscode.workspace.getConfiguration(Constants.Settings.DS_DEFAULT_PS);
             break;
     }
     return {

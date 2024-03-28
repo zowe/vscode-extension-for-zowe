@@ -17,7 +17,7 @@ import { IZoweDatasetTreeNode, IZoweTreeNode, ZosEncoding, ZoweLogger } from "@z
 import { Profiles } from "../Profiles";
 import { DatasetTree, createDatasetTree } from "./DatasetTree";
 import { ZoweDatasetNode } from "./ZoweDatasetNode";
-import * as contextuals from "../shared/context";
+import * as contextuals from "@zowe/zowe-explorer-api/src/shared/context";
 import { getSelectedNodeList } from "../shared/utils";
 import { initSubscribers } from "../shared/init";
 import { TreeViewUtils } from "../utils/TreeViewUtils";
